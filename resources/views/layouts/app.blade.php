@@ -11,7 +11,7 @@
 
     {{-- <title>{{ config('app.name', 'GetBox') }}</title> --}}
 
-    <title>GetBox - An encrypted box for secure life</title>
+    <title>Mybox.nz - An encrypted box for secure life</title>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
