@@ -1,0 +1,150 @@
+/* your styles go here */
+
+#thename {
+    font-size: 30px;
+    font-weight: bold;
+    color: darkviolet;
+}
+
+.icon-shield-settings {
+    font-size: 30px;
+}
+
+
+#timecreated {
+    
+    font-size: 13px;
+}
+
+.decryptedmesssage {
+    background-color: #f1f3f0;
+    padding-left: 20px;
+}
+
+.iconmessage {
+    
+    width: 6%;
+        
+}
+
+textarea {
+    padding: 5px;
+}
+
+
+.replydecryptedmesssage {
+    background-color: #edf5ea;
+    padding-left: 2%;
+        
+}
+
+.accordion-custom .card-header button {
+    padding-left: 1%;
+}
+
+
+
+
+/*
+ * 4. PAGINATION
+ */
+.page-item:first-child .page-link {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.page-item:last-child .page-link {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.page-item.active .page-link {
+  color: #fff;
+  background-color: #9055A2;
+  border-color: #9055A2;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+.page-link {
+  padding: 0.5rem 0.75rem;
+  line-height: 1.25;
+  color: #9055A2;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.page-link:hover, .page-link:focus {
+  color: #633b70;
+  text-decoration: none;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.pagination-lg .page-link {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.pagination-lg .page-item:first-child .page-link {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.pagination-lg .page-item:last-child .page-link {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.pagination-sm .page-link {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.pagination-sm .page-item:first-child .page-link {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.pagination-sm .page-item:last-child .page-link {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+
+
+/*phân trang*/
+
+
+.pagination .pagination a {
+   padding: 0.5rem 0.75rem;
+  line-height: 1.25;
+  color: #9055A2;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+    
+}
+
+.pagination .pagination .disabled span {
+    color: #6c757d;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+
+.pagination .pagination .active span {
+  padding: 0.5rem 0.75rem;
+  line-height: 1.25;  
+  color: #fff;
+  background-color: #9055A2;
+  border-color: #9055A2;
+    
+}
+
+
