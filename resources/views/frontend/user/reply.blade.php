@@ -126,7 +126,7 @@
 
          {{-- Phần giải mã --}}
         <span style="padding-left: 43%;">
-            <button style="display: inline!important; " class='btn-primary btn-sm' data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed"><span> Read</span></button>
+            <button style="display: inline!important; " class='btn btn-primary btn-sm btn-xs' data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed"><span> Read</span></button>
         </span>
 
         <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion" class="collapse">
