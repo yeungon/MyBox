@@ -43,7 +43,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}"> GetBox
+                    <a class="navbar-brand" href="{{ url('/') }}"> MyBox
                         {{-- {{ config('app.name', 'MyBox') }} --}}
                     </a>
                 </div>
