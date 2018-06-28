@@ -249,7 +249,7 @@
           <h2>A private space that can be shared</h2>
           <div class="row">
             <div class="col-lg-9 mx-auto">
-              <p class="lead text-white mt-2">The message, post and information can be kept in secret but can be shared with your own control</p>
+              <p class="lead text-white mt-2">The message, status and information exchanged in general kept in secret but can be shared with your own control</p>
             </div>
           </div><a href="#" class="btn btn-outline-light">Learn More</a>
         </div>
@@ -271,25 +271,25 @@
             <div class="col-lg-4">
               <div class="box text-center">
                 <div class="icon d-flex align-items-end"><img src="{{asset('themes/appton/img/monitor.svg')}}" alt="..." class="img-fluid"></div>
-                <h3 class="h4">Web desgin</h3>
-                <p class="text-small font-weight-light">Lorem Ipsum has been the industry's standard dummy text ever.</p>
+                <h3 class="h4">Secured information</h3>
+                <p class="text-small font-weight-light">Your data is encrypted and secured kept in our data, but no body can access it since only your private key can open it</p>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="box text-center">
                 <div class="icon d-flex align-items-end"><img src="{{asset('themes/appton/img/target.svg')}}" alt="..." class="img-fluid"></div>
-                <h3 class="h4">Print</h3>
-                <p class="text-small font-weight-light">Lorem Ipsum has been the industry's standard dummy text ever.</p>
+                <h3 class="h4">Anonymously platform</h3>
+                <p class="text-small font-weight-light">You can anonymously get in touch with those you want</p>
               </div>
             </div>
             <div class="col-lg-4">
               <div class="box text-center">
                 <div class="icon d-flex align-items-end"><img src="{{asset('themes/appton/img/chat.svg')}}" alt="..." class="img-fluid"></div>
-                <h3 class="h4">SEO and SEM</h3>
-                <p class="text-small font-weight-light">Lorem Ipsum has been the industry's standard dummy text ever.</p>
+                <h3 class="h4">Free service</h3>
+                <p class="text-small font-weight-light">MyBox is free, of course. </p>
               </div>
             </div>
-            <div class="col-lg-4">
+            {{-- <div class="col-lg-4">
               <div class="box text-center">
                 <div class="icon d-flex align-items-end"><img src="{{asset('themes/appton/img/idea.svg')}}" alt="..." class="img-fluid"></div>
                 <h3 class="h4">Consulting</h3>
@@ -309,7 +309,8 @@
                 <h3 class="h4">UX &amp; UI</h3>
                 <p class="text-small font-weight-light">Lorem Ipsum has been the industry's standard dummy text ever.</p>
               </div>
-            </div>
+            </div> --}}
+
           </div>
         </div>
       </div>
@@ -318,10 +319,10 @@
     <section class="bg-gray">
       <div class="container">
         <div class="text-center">
-          <h2>Trusted by teams everywhere</h2>
+          <h2>Your data is invaluable that need to be protected</h2>
           <div class="row">
             <div class="col-lg-8 mx-auto">
-              <p class="lead text-muted mt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. sed do eiusmod tempor incididunt..</p>
+              <p class="lead text-muted mt-2">MyBox is where you can communicate in silent, safety and fun</p>
             </div>
           </div>
         </div>
@@ -357,10 +358,10 @@
       <div class="container text-center text-lg-left">
         <div class="row align-items-center">
           <div class="col-lg-7">
-            <h2 class="divider-heading">Curious how Appton <br>works for large</h2>
+            <h2 class="divider-heading">Curious how MyBox <br>works for you?</h2>
             <div class="row">
               <div class="col-lg-10">
-                <p class="lead divider-subtitle mt-2 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing. Vitae animi mollitia cumque sunt soluta. consectetur adipisicing.</p>
+                <p class="lead divider-subtitle mt-2 text-muted">How can I be sure that I am protected? Check the FAQ!</p>
               </div>
             </div><a href="#" class="btn btn-primary">Learn More</a>
           </div>

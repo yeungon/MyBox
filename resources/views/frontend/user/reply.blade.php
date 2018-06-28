@@ -156,10 +156,7 @@
                               </span>
                     </form>
                        
-                    <form class="form-horizontal" method="get" style="display: inline!important; padding-left: 5px;" action="{{route('home.user', ['username'=>$username])}}">
-                                                                                                          
-                      <button type="submit" class="btn btn-sm btn-warning btn-xs">Cancel</button>
-                      </form>
+                    <span style="padding-left: 2%;"><button style="display: inline!important;" class='btn btn-warning btn-sm btn-xs' data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed">Cancel</button></span> 
           
               {{-- end --}}
 

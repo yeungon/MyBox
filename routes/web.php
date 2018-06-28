@@ -124,6 +124,13 @@ Route::get('/users/create', 'UserController@create')->name('user.create');
 Route::post('/users', 'UserController@store')->name('user.store');*/
 
 
+Route::get('abc/mahoa', function(){
+
+	$desalt = base64_decode(env("APP_SALT"));
+
+	echo encrypt($desalt);
+});
+
 
 
 
