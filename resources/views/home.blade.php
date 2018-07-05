@@ -84,7 +84,7 @@
                              Edit
                           </button>
                     </form>
-                Edit your key. You need to provide either masterkey or private key to change your account.
+                Edit your key. You need to provide your current password and private key to change your account.
                 {{-- end of the deleting a new masterkey section --}}
                 <br>
                 <br>
@@ -132,9 +132,9 @@
 
 
             {{-- Write button--}}
-            <span style="padding-left: 15px;"><button type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-target="#write">Write</button></span>
+            <span style="padding-left: 2%;"><button type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-target="#write">Write</button></span>
 
-            <span style="padding-left: 15px;"><button type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-target="#demo">Read</button></span>
+            <span style="padding-left: 5%px;"><button type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-target="#demo">Read</button></span>
             <br>
 
 
@@ -142,7 +142,8 @@
 
             <br>
                           
-                   <span style="padding-left: 110px">Hi <strong>{{$users->username}}</strong>! Write new update: </span>
+                   <span style="padding-left: 15%">Hi <strong>{{$users->username}}</strong>! Write new update: </span>
+                    <br>
                     <br>
                   
                   <form class="form-horizontal" style=" display:inline!important;" method="POST" action="{{ route('message.store') }}">
@@ -156,7 +157,7 @@
                                     
                                     {{-- <input id="privatekey" type="password" class="form-control" name="privatekey" required> --}}
 
-                                    <span style="padding-left: 110px"><textarea cols="90" rows="3" name="message" required></textarea></span>
+                                    <span style="margin-left: 0%"><textarea style="margin-left: 25%" class="form-control" name="message" required></textarea></span>
                                     
                                     @if ($errors->has('message'))
                                         <span class="help-block">
@@ -167,7 +168,7 @@
                                 </div>
                               </div>
 
-                                    <span style="padding-left: 255px">
+                                    <span style="padding-left: 42%">
                                     <button type="submit" class="btn btn-primary btn-xs">
                                     Create
                                     </button>
@@ -176,10 +177,12 @@
            
             {{-- End of Read the message button --}}
                       {{--cancel form  --}}
-                      <form class="form-horizontal" method="get" style="display: inline!important; padding-left: 5px;" action="{{route('home')}}">
+                      {{-- <form class="form-horizontal" method="get" style="display: inline!important; padding-left: 5px;" action="{{route('home')}}"> --}}
                                                                                                           
-                      <button type="submit" class="btn btn-default btn-xs">Cancel</button>
-                      </form>
+                      <button style="display:inline!important;" data-toggle="collapse" data-target="#write" class="btn btn-default btn-xs">Cancel</button>
+
+
+                      {{-- </form> --}}
                       {{-- cancel form --}}
 
          </div> {{-- end of popup --}}
@@ -232,7 +235,7 @@
                                 </div>
                               </div>
 
-                                    <span style="padding-left: 305px">
+                                    <span style="padding-left: 35%">
                                     <button type="submit" class="btn btn-primary btn-xs">
                                     Verify
                                     </button>
@@ -241,10 +244,12 @@
            
             {{-- End of Read the message button --}}
             {{--cancel form  --}}
-                      <form class="form-horizontal" method="get" style="display: inline!important; padding-left: 5px;" action="{{route('home')}}">
+                      {{-- <form class="form-horizontal" method="get" style="display: inline!important; padding-left: 5px;" action="{{route('home')}}">
                                                                                                           
-                      <button type="submit" class="btn btn-default btn-xs">Cancel</button>
-                      </form>
+                      <button data-toggle="collapse" data-target="#demo" class="btn btn-default btn-xs">Cancel</button>
+                      </form> --}}
+
+                      <button data-toggle="collapse" data-target="#demo" class="btn btn-default btn-xs">Cancel</button>
           {{-- cancel form --}}
 
          </div> {{-- end of popup --}}
@@ -280,7 +285,7 @@
             <div id="readreply" class="collapse">
                           
                    <p style="padding-left: 3%"> Decrypte your encrypted message with private key.</p>
-                   <form class="form-horizontal" style="display: inline; padding-left: 20px" method="POST" action="{{ route('ask.authenticate') }}">
+                   <form class="form-horizontal" style="display: inline; padding-left: 10%" method="POST" action="{{ route('ask.authenticate') }}">
                         {{ csrf_field() }}
                         
                         <div class="form-group{{ $errors->has('privatekey') ? ' has-error' : '' }}">
@@ -299,7 +304,7 @@
                                 </div>
                               </div>
 
-                                    <span style="padding-left: 305px">
+                                    <span style="padding-left: 35%">
                                     <button type="submit" class="btn btn-primary btn-xs">
                                     Verify
                                     </button>
@@ -308,10 +313,10 @@
            
             {{-- End of Read the message button --}}
             {{--cancel form  --}}
-                      <form class="form-horizontal" method="get" style="display: inline!important; padding-left: 5px;" action="{{route('home')}}">
+                      {{-- <form class="form-horizontal" method="get" style="display: inline!important; padding-left: 5px;" action="{{route('home')}}"> --}}
                                                                                                           
-                      <button type="submit" class="btn btn-default btn-xs">Cancel</button>
-                      </form>
+                      <button data-toggle="collapse" data-target="#readreply" class="btn btn-default btn-xs">Cancel</button>
+                      {{-- </form> --}}
           {{-- cancel form --}}
 
          </div> {{-- end of popup --}}

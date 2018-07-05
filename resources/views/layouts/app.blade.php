@@ -25,6 +25,21 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 
+    <style type="text/css">
+        
+    @font-face {
+      font-family: "Sailec";
+      font-weight: 400;
+      src: url("themes/appton/fonts/Sailec.otf");
+    }
+     
+     body{
+        font-family: Sailec, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu; 
+   }
+
+
+    </style>
+
     
 </head>
 <body>

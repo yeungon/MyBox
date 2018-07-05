@@ -122,17 +122,18 @@
       <div class="container">
 
       
-        <h4 style="display: inline!important">Ask and Reply</h4>
+        <h4 style="display: inline!important">Reply</h4>
 
          {{-- Phần giải mã --}}
-        <span style="padding-left: 43%;">
+        <span style="padding-left: 47%;">
             <button style="display: inline!important; " class='btn btn-primary btn-sm btn-xs' data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed"><span> Read</span></button>
         </span>
-
+        <br>
+        <br>
         <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion" class="collapse">
         <div class="card-body">
               {{-- begin --}}
-               <form class="form-horizontal" style="display: inline; padding-left: 20px" method="POST" action="{{ route('home.userreplyverify', ['username'=> $username, 'token' => sha1(rand(1, 1000))])}}">
+               <form class="form-horizontal" style="display: inline; padding-left: 10%" method="POST" action="{{ route('home.userreplyverify', ['username'=> $username, 'token' => sha1(rand(1, 1000))])}}">
                         {{ csrf_field() }}
                         
                         <div class="form-group{{ $errors->has('privatekey') ? ' has-error' : '' }}">
@@ -149,7 +150,7 @@
 
                                 </div>
                               </div>
-                              <span style="padding-left: 40%">
+                              <span style="padding-left: 20%">
                               <button type="submit" class="btn btn-primary btn-sm btn-xs">
                               Decipher
                               </button>
@@ -176,8 +177,8 @@
                             <div id="headingTwo" class="card-header">
                                 <h4 class="mb-0 accordion-heading">
                                   <button aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed">
-                                    <span class="iconmessage"><i class="icon-light-bulb"></i></span>
-                                    <span id="timecreated"> Asked at {{$ask->created_at}}.</span>
+                                    <span class="iconmessage"><i style="font-size: 130%; padding-right: 5%; margin-left: 0px"  class="icon-light-bulb"></i></span>
+                                    <span style="padding-left: 20px;" id="timecreated">Asked at {{$ask->created_at}}.</span>
                                   </button>
                                 </h4>
                               </div>
@@ -188,8 +189,8 @@
                            <div style="padding-left: 1%" id="headingTwo" class="card-header replyask">
                                 <h4 class="mb-0 accordion-heading">
                                   <button aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed">
-                                    <span class="iconmessage"><i style="color:#9055A2; font-weight: bold" class="icon-shield-settings"></i></span>
-                                    <span id="timecreated"> <b>Reply</b> at {{$ask->created_at}}.</span>
+                                    <span class="iconmessage"><i style="color:#9055A2; font-weight: bold; font-size: 130%; padding-right: 5%; margin-left: 0px" class="icon-shield-settings"></i></span>
+                                    <span style="padding-left: 20px" id="timecreated"> <b>Reply</b> at {{$ask->created_at}}.</span>
                                   </button>
                                 </h4>
                            </div>

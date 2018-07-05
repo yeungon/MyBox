@@ -29,6 +29,30 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+      <style type="text/css">
+      
+      
+
+      @font-face {
+      font-family: "Sailec";
+      font-weight: 400;
+      src: url("themes/appton/fonts/Sailec.otf");
+
+    }
+
+      
+     body{
+        font-family: Sailec,/*Helvetica Neue,Helvetica,Arial,sans-serif,*/ -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu!important; 
+        font-size: 15.5px;
+        
+      }
+
+
+
+
+    </style>
+
   </head>
   <body>
    <!-- navbar-->
@@ -123,7 +147,7 @@
       <div class="container">
 
       
-        <h4 style="display: inline!important">Ask and Reply</h4>
+        <h4 style="display: inline!important">Reply</h4>
 
 
          {{-- Phần giải mã --}}
@@ -132,12 +156,14 @@
         </span> --}}
 
         @if($privatekey==true)
-            <span style="padding-left: 37%;">
+            <span style="padding-left: 30%;">
               <form style="display: inline!important;" action="{{route('home.userreply', ['id'=> $username])}}" method="GET">
-              <button style="display: inline!important;" id='thebutton' class='btn-warning btn-sm' class="d-flex align-items-center collapsed"><span> Closing</span> in <strong><span style="color: green; padding-left: 0px" id='Label1'></span></strong>
+              <button onclick="closethebutton()" style="display: inline!important; border-radius: 5%;" id='thebutton' class='btn-warning btn-sm' class="d-flex align-items-center collapsed"><span>Closing </span><strong><span style="color: green; padding-left: 0px" id='timelefttoread'></span></strong>
               </button>
               </form>
             </span>
+            <br>
+            <br>
           @else
             <span style="padding-left: 37%;">
             <button style="display: inline!important; " class='btn-success btn-sm' data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed"><span> Read</span></button>
@@ -167,7 +193,7 @@
 
                                 </div>
                               </div>
-                              <span style="padding-left: 455px">
+                              <span style="padding-left: 35%">
                               <button type="submit" class="btn btn-primary btn-sm btn-xs">
                               Decipher
                               </button>
@@ -198,13 +224,13 @@
                     <div id="headingTwo" class="card-header">
                     <h4 class="mb-0 accordion-heading">
                       <button aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed">
-                        <span class="iconmessage"><i class="icon-light-bulb"></i></span>
-                        <span id="timecreated"> @asked at {{$ask->created_at}}.</span>
+                        <span class="iconmessage"><i style="font-size: 130%; padding-right: 5%; margin-left: 0px"  class="icon-light-bulb"></i></span>
+                        <span style="padding-left: 18px" id="timecreated"> @asked at {{$ask->created_at}}.</span>
                       </button>
                     </h4>
                     </div>
                                         
-                    <span style="font-size: 14px" class="decryptedmesssage">{{sodium_crypto_box_seal_open(base64_decode($ask->ask), base64_decode($privatekey))}}</span>
+                    <span style="font-size: 14px" class="decryptedmesssage">{{sodium_crypto_box_seal_open(decrypt($ask->ask), decrypt($privatekey))}}</span>
 
                     {{-- Reply --}}
 
@@ -221,7 +247,7 @@
                           
                            <span style="padding-left: 15%" class="replydecryptedmesssage">
                             
-                            {{sodium_crypto_box_seal_open(base64_decode($ask->reply['reply']), base64_decode($privatekey))}}</span>
+                            {{sodium_crypto_box_seal_open(decrypt($ask->reply['reply']), decrypt($privatekey))}}</span>
 
                      {{-- end of reply --}}
                     @endforeach
@@ -307,19 +333,50 @@
     <script src="{{asset('themes/appton/js/front.js')}}"></script>
 
     <script type="text/javascript">
-    time = 60;
+    {{-- lấy thời gian sau khi decipher - Get the current second left after providing private key--}}
+    
+    var now = sessionStorage.getItem("currenttimehomepagereadlocal");
+
+    if(now == null){
+      time = 60;
+    }else if(now <= 60 && now >0){
+      time = now;
+    }else{
+      time = 60;
+    }
+    
     interval = setInterval(function() {
         time--;
-        document.getElementById('Label1').innerHTML = "" + time + " s"
-        if (time == 0) {
+        
+        document.getElementById('timelefttoread').innerHTML = "" + time + " s";
+
+        /*lưu giữ thời gian hiện tại
+        * @see https://toidicode.com/localstorage-va-sessionstorage-189.html
+        * @see https://www.w3schools.com/jsref/prop_win_sessionstorage.asp
+        */
+        sessionStorage.setItem("currenttimehomepagereadlocal", time);
+
+      if (time == 0) {
             // stop timer
             clearInterval(interval);
             // click
-            document.getElementById('thebutton').click();            
+            document.getElementById('thebutton').click();
+
+            /*Xóa sessionStorage*/// 
+
+            sessionStorage.removeItem('currenttimehomepagereadlocal');         
         }
+        
     }, 1000)
 
-    </script>
+
+     /*Xóa dữ liệu tạm trên sessionStore khi click*/
+    function closethebutton(){
+
+        sessionStorage.removeItem('currenttimehomepagereadlocal');
+    }
+
+  </script>
 
   </body>
 </html>

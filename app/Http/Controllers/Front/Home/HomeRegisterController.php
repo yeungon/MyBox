@@ -51,7 +51,7 @@ class HomeRegisterController extends Controller
 
     public function index()
     {
-        return view('frontend\home\homeregister');
+        return view('frontend.home.homeregister');
     }
 
 
@@ -81,16 +81,17 @@ class HomeRegisterController extends Controller
             return redirect()->back()->withErrors($valid)->withInput();
 
             }else{
-                $username = $request['username'];
+                /*Bỏ dấu trắng và chuyển thành lowercase*/
+                $username = strtolower(trim($request['username']));
                 $email = $request['email'];
-                $password = $request['matkhau'];
+                $password = trim($request['matkhau']);
 
                 $Keypair = sodium_crypto_box_keypair();
                 $PublicKey = sodium_crypto_box_publickey($Keypair);
 
                 /*Convert to encrypted string, that can be stored in database*/
-                $public = base64_encode($PublicKey);
-                $private = base64_encode($Keypair);
+                $public = encrypt($PublicKey);
+                $private = encrypt($Keypair);
 
                  User::create([
                 'username' => $username,
@@ -104,7 +105,7 @@ class HomeRegisterController extends Controller
 
                 [__COPY_THE_BELOW__]</br><br>
 
-                <b>$private </b><br><br>
+                <pre>$private </pre><br><br>
 
                 [__COPY_THE_ABOVE_PRIVATE_KEY__]<br> You have to keep this private key IN SECRET somewhere else." );
        

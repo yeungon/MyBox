@@ -43,7 +43,9 @@ class UserController extends Controller
       
         /*Kiểm tra có tồn tại hay không*/
         
-        /*Thông tin bảng user*/
+        /*Thông tin bảng user, lấy từ GET request*/
+        $username = strtolower(trim($username));
+
         $user = User::where('username', $username)->first();
 
         
@@ -80,7 +82,7 @@ class UserController extends Controller
         
         $valid = Validator::make($request->all(), [
             
-            'privatekey' => 'required|string|min:87|max:89',
+            'privatekey' => 'required|string|min:290|max:310',
                                  
         ],[
             /*Customeize the error*/
@@ -105,6 +107,8 @@ class UserController extends Controller
 
 
         // Lấy thông tin người dùng hiện tại
+        $username = strtolower(trim($username));
+        
         $data['username']  = $username;
 
         /*Thông tin bảng user*/
@@ -149,7 +153,7 @@ class UserController extends Controller
         $privatekeysession = $request->session()->get('privatekey');
        
 
-        $decrypted = sodium_crypto_box_seal_open(base64_decode($encrypted), base64_decode($privatekeysession));
+        $decrypted = sodium_crypto_box_seal_open(decrypt($encrypted), decrypt($privatekeysession));
 
             
         if ($decrypted === false) {
@@ -211,6 +215,9 @@ class UserController extends Controller
 
         $usernamedata = $data['username'];
 
+        /*username lấy từ GET request*/
+        $username = strtolower(trim($username));
+
         if($usernamedata != $username){
             return redirect()->route('home.userread', ['id' => $username]);
         }
@@ -232,7 +239,10 @@ class UserController extends Controller
     
     public function send($username)
     {
-       
+        
+        /*username lấy từ GET request*/
+        $username = strtolower(trim($username));
+
          // Kiểm tra có login hay không
         if (Auth::check()) {
                 $data['login'] ="logined";
@@ -294,9 +304,9 @@ class UserController extends Controller
                 
                 $ask = $request->input('ask');
 
-                $ciphertext = sodium_crypto_box_seal($ask, base64_decode($key));
+                $ciphertext = sodium_crypto_box_seal($ask, decrypt($key));
 
-                $encrypted = base64_encode($ciphertext);
+                $encrypted = encrypt($ciphertext);
 
                 /*create a new array of data*/
                 $ask = Ask::create([
@@ -317,17 +327,45 @@ class UserController extends Controller
    public function replyshow(Request $request, $username)
    {
         /*Lấy người dùng hiện tại đang truy cập*/
+         // Lấy thông tin người dùng hiện tại
+        
+
+        // /*Thông tin bảng user*/
+        // $user = User::where('username', $username)->first();
+
+        // /*Nếu có người dùng này*/
+        // if($user == true){
+            
+        //     $data['username'] = $user->username;
+            
+        //     $id = $user->id;
+
+        //     $data['id'] = $user->id;
+
+        // }else{
+
+        //     $data['username'] = 'theuserisnotregistered';
+        // }
+
+        // if (strlen($username)) {
+        //     echo "username có "
+        // }
+
+        $username = strtolower(trim($username));
+
+        
         $user = User::where('username', $username)->first();
         if ($user == true) {
-             $key = $user->publickey;
             $id = $user->id;
             $useraccess = $user->username;
-            $data['username'] = trim($useraccess);
+            $data['username'] = strtolower(trim($useraccess));
         }else{
+            
+            $data['username'] = 'theuserisnotregistered';
             return redirect()->route('home.user', ['id'=>$username]);
-        
-        }
 
+                    
+        }
        
 
         // $data['asks'] = Ask::where('usersid', '=', $id)->orderBy('id', 'desc')->paginate(3);
@@ -356,7 +394,7 @@ class UserController extends Controller
         
         $valid = Validator::make($request->all(), [
             
-            'privatekey' => 'required|string|min:87|max:89',
+            'privatekey' => 'required|string|min:290|max:310',
                                  
         ],[
             /*Customeize the error*/
@@ -378,7 +416,6 @@ class UserController extends Controller
                 $request->session()->put('privatekey', $privatekeyinput);
 
         }
-
         
         // Lấy thông tin người dùng hiện tại
         $data['username']  = $username;
@@ -424,7 +461,9 @@ class UserController extends Controller
         // Getsession và không xóa session có tên 'privatekey'
         $privatekeysession = $request->session()->get('privatekey');
        
-        $decrypted = sodium_crypto_box_seal_open(base64_decode($question), base64_decode($privatekeysession));
+        $decrypted = sodium_crypto_box_seal_open(decrypt($question), decrypt($privatekeysession));
+
+        // dd($decrypted);
 
             
         if ($decrypted === false) {

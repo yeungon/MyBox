@@ -23,15 +23,15 @@ Route::post('/box/logging', 'Front\Home\HomeLoginController@login')->name('home.
 // Route::get('/box/resetpassword', 'Front\Home\ForgotPasswordController@index')->name('home.resetpassword');
 
 /*Ghi đè login và register*/
-Route::get('/login', 'Front\Home\HomeRegisterController@index')->name('home.registerindex');
+Route::get('/login', 'Front\Home\HomeRegisterController@index')->name('login');
 Route::get('/register', 'Front\Home\HomeRegisterController@index')->name('home.registerindex');
 
 
-// Password Reset Routes...https://tutorials.kode-blog.com/laravel-authentication-with-password-reset
-Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
-Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset.token');
-Route::post('password/reset', 'ResetPasswordController@reset');
+// // Password Reset Routes...https://tutorials.kode-blog.com/laravel-authentication-with-password-reset
+// Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+// Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+// Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset.token');
+// Route::post('password/reset', 'ResetPasswordController@reset');
 
 
 /*User Frontend*/
@@ -41,12 +41,12 @@ Route::post('/{id}/', 'Front\User\UserController@read')->where('id', '[A-Za-z0-9
 
 Route::get('/{id}/{token}.html', 'Front\User\UserController@readmessage')->where(['id' => '[a-z0-9]+', 'token' =>'[A-Za-z0-9_]{40}+'])->name('home.userreadmessage');
 
-Route::get('/{id}/send', 'Front\User\UserController@send')->where('id', '[a-z0-9_]{4,}+')->name('home.usersend');
+Route::get('/{id}/send', 'Front\User\UserController@send')->where('id', '[A-Za-z0-9_]{1,}+')->name('home.usersend');
 
 Route::post('/{id}/send', 'Front\User\UserController@sendstore')->where('id', '[a-z0-9_]{4,}+')->name('home.usersendstore');
 
 
-Route::get('/{id}/reply', 'Front\User\UserController@replyshow')->where('id', '[a-z0-9_]{4,}+')->name('home.userreply');
+Route::get('/{id}/reply', 'Front\User\UserController@replyshow')->where('id', '[A-Za-z0-9_]{1,}+')->name('home.userreply');
 Route::post('/{id}/reply', 'Front\User\UserController@replyverify')->where('id', '[A-Za-z0-9]+')->name('home.userreplyverify');
 Route::get('/{id}/reply/{token}.html', 'Front\User\UserController@replyread')->where(['id' => '[a-z0-9]+', 'token' =>'[A-Za-z0-9_]{40}+'])->name('home.userreplyread');
 
@@ -97,6 +97,10 @@ Route::post('/box/me/message/', 'Admin\MessageController@store')->name('message.
 Route::delete('/box/me/message/{id}', 'Admin\MessageController@delete')->name('message.delete');
 
 
+
+Route::POST('/box/me/like', 'Admin\LikeController@index')->name('boxme.like');
+
+
 // Route::delete('/me/messageread/{id}', 'Admin\MessageController@deletewhenread')->name('message.deletewhenread');
 
 
@@ -126,9 +130,63 @@ Route::post('/users', 'UserController@store')->name('user.store');*/
 
 Route::get('abc/mahoa', function(){
 
-	$desalt = base64_decode(env("APP_SALT"));
+	
+	   
 
-	echo encrypt($desalt);
+          /* On Node B: */
+    $private  = sodium_crypto_box_keypair();
+    $public  = sodium_crypto_box_publickey($private);
+    // Then share $bobPublicKey with Node A
+
+       
+        $key =  encrypt($public);
+
+        echo "<br>";
+
+
+        $private = encrypt($private);
+
+      //   // echo "<br>";
+
+      //   // echo base64_encode($public);
+
+       
+      //   // // $key2 = encrypt($public_Key);
+
+
+      //   // //echo decrypt($abc);
+       
+      //   // die();
+
+       
+      // //       die();
+
+      // //       $decrypted2 = sodium_crypto_box_seal_open(decrypt($encrypted), decrypt($privatekeysession));
+            
+      //   $key = 'eyJpdiI6InczMDIxc1U1MjFuTWJLYkRpMUttc1E9PSIsInZhbHVlIjoicjNXR3RDSXltMzdjalVXTEgyNDNIMlJ4bzVFQ0RwN2ZGQUhpUGR0YWI4TWI0SmtTZWJoUGRvaytoZHRST1lNWiIsIm1hYyI6ImQyZTBiMjQyNDA5OTlhN2ZlOGM3MGE1M2M2ZjdiMTAzODY2ZGYzM2U3MTA5Y2E3N2NiNWZkNDY3YmI5MDI1ZjcifQ==';
+
+      //   $private = 'eyJpdiI6Ik5CSk90eUlNcnFSdUFGV2VySnhaWWc9PSIsInZhbHVlIjoielNzYzdXdkMzMW9NSjlVYzNCMmZHeDcwa1wvOEdlQldnenBUdUt6Ym55dGdpb3VreVFzQWdad2gyS2hIZmNPMVJBU3RYNSthM25LckNQVDE0V01GUGlZV2RKVnVrNXd1dk9rVUJxbk1PeW9vPSIsIm1hYyI6IjkzNjgzMWZhMTgwNjU1MTM2OGE2Y2IwYzRmNjk3ODZmMTcxYTJkZjk5Nzk5MDhmY2IwZWY1NWFlYTE2MTdkMDQifQ==';
+         
+      //   // $key = 'VlFN1/Y/X6Q/habhs9kNo7sjMiH30Un3abP7X2C1jig=';
+
+      //   // $private = '/2fqCiVEx0Q2K2HrYqoCy85tegdIXcyTs0IA9T//szxWUU3X9j9fpD+FpuGz2Q2juyMyIffRSfdps/tfYLWOKA==';
+            
+        $message = "Thư mật nè Hi there,fda fdafds fafsfd  thử xem độ dài của thư, thử xem độ dài của thư, thử xem";
+            
+        $ciphertext = sodium_crypto_box_seal($message, decrypt($key));
+            
+            //echo  base64_decode($ciphertext);
+
+        /* On Node B, receiving an encrypted message from Node A */
+
+        $data = encrypt($ciphertext);
+
+        
+
+        echo $decrypted = sodium_crypto_box_seal_open(decrypt($data), decrypt($private));
+
+        
+
 });
 
 

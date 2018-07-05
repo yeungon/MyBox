@@ -30,6 +30,35 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    <style type="text/css">
+
+    /*NationalBook and Saile fonts are not free :-), willing to buy soon, using here for testing only*/
+    @font-face {
+      font-family: "NationalBook";
+      font-weight: 400;
+
+      src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-Book.woff");
+    }
+
+
+    @font-face {
+      font-family: "Sailec";
+      font-weight: 400;
+      src: url("themes/appton/fonts/Sailec.otf");
+
+    }
+
+      
+     body{
+        font-family: Sailec,/*Helvetica Neue,Helvetica,Arial,sans-serif,*/ -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu!important; 
+        font-size: 15.5px;
+        
+      }
+
+
+    </style>
+
     <!-- JavaScript files-->
     <script src="{{asset('themes/appton/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('themes/appton/vendor/popper.js/umd/popper.min.js')}}"> </script>

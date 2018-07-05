@@ -75,12 +75,12 @@
              {{-- Close the message --}}
             
              <form class="form-horizontal" style="display: inline; padding-left: 15px" method="GET" action="{{ route('home') }}">
-             <button type="submit" class="btn btn-danger btn-xs" id='thebutton'>
+             <button onclick="closethebutton()" type="submit" class="btn btn-danger btn-xs" id='thebutton'>
                     Close  
                 </button>
             </form>
 
-            <strong><span style="color: green; padding-left: 5px" id='Label1'></span></strong> left to read and reply the questions.
+            <strong><span style="color: green; padding-left: 5px" id='timetoread'></span></strong> left to read and reply the questions.
 
             {{-- <input type='submit' id='thebutton' onclick="document.getElementById('Label2').innerHTML = 'Clicked!'"></input>  --}}
             
@@ -108,11 +108,11 @@
                         <td>
 
                         {{-- privatekey truyền sang từ session --}}
-                        <span style='font-family: "roboto","Helvetica Neue",Helvetica,Arial,sans-serif';>{{sodium_crypto_box_seal_open(base64_decode($message->ask), base64_decode($privatekey))}}</span
+                        <span style='font-family: "roboto","Helvetica Neue",Helvetica,Arial,sans-serif';>{{sodium_crypto_box_seal_open(decrypt($message->ask), decrypt($privatekey))}}</span
                                                 
                         </td>
 
-                        {{-- Reply --}}
+                        {{-- Reply nếu bảng reply có content thì Edit--}}
 
                         @if($message->reply == true)                        
                               <td>
@@ -122,9 +122,7 @@
                               </td>
                         @else
                                <td>
-
                                  <span style="padding-left: 12%;"><button type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-target="#readreply{{$message->id}}">Reply</button>
-
                               </td>
                        @endif  
 
@@ -179,7 +177,7 @@
                                           <div style="padding-left: 5%; font-family: Helvetica, Arial;" id="readreply{{$message->id}}" class="collapse">
                                                 
                                                 <span style='font-family: "roboto","Helvetica Neue",Helvetica,Arial,sans-serif';>
-                                                {{sodium_crypto_box_seal_open(base64_decode($message->reply['reply']), base64_decode($privatekey))}}
+                                                {{sodium_crypto_box_seal_open(decrypt($message->reply['reply']), decrypt($privatekey))}}
                                                 </span>
                                                  <br>
                                                  <br>                                                                                      
@@ -212,13 +210,8 @@
                                         <div id="readreplyedit{{$message->reply['id']}}" class="collapse">
                                                 <form class="form-horizontal" style="display: inline; margin:0px; padding: 0px" method="POST" action="{{route('ask.replyedit')}}">
                                                     {{ csrf_field() }}
-                                                   
-                                                    <textarea style="padding: 0px; margin: 0px; display: inline-block;" id="reply" class="form-control" rows="3" name="reply" required>
-                                                   
-                                                   {{trim(sodium_crypto_box_seal_open(base64_decode($message->reply['reply']), base64_decode($privatekey)))}}
-                                                    
-                                                    </textarea>
-                                                    
+                                  <textarea style="padding-left: 2px!important;" id="reply" class="form-control" name="reply" required>{{trim(sodium_crypto_box_seal_open(decrypt($message->reply['reply']), decrypt($privatekey)))}}</textarea>
+                                                                                              
                                                     <input type="hidden" name="replyid" value="{{$message->reply['id']}}">
                                                     <br>
                                                     <span style="padding-left: 30%"><button type="submit" class="btn btn-primary btn-xs">Update</button></span>
@@ -275,26 +268,72 @@
 </div>
 
 <script type="text/javascript">
-    time = 480;
+  
+        
+  
+    {{-- lấy thời gian sau khi decipher - Get the current second left after providing private key--}}
+    
+    var now = sessionStorage.getItem("currenttimeloginreadask");
+
+    if(now == null){
+      time = 480;
+    }else if(now <= 480 && now >0){
+      time = now;
+    }else{
+      time = 480;
+    }
+    
     interval = setInterval(function() {
         time--;
-        document.getElementById('Label1').innerHTML = "" + time + " seconds"
-        if (time == 0) {
+        
+        document.getElementById('timetoread').innerHTML = "" + time + " s";
+
+        /*lưu giữ thời gian hiện tại
+        * @see https://toidicode.com/localstorage-va-sessionstorage-189.html
+        * @see https://www.w3schools.com/jsref/prop_win_sessionstorage.asp
+        */
+        sessionStorage.setItem("currenttimeloginreadask", time);
+
+      if (time == 0) {
             // stop timer
             clearInterval(interval);
             // click
-            document.getElementById('thebutton').click();            
+            document.getElementById('thebutton').click();
+
+            /*Xóa sessionStorage*/// 
+
+            sessionStorage.removeItem('currenttimeloginreadask');         
         }
+
     }, 1000)
 
-    /*ẩn hiện*/
-    function show(target) {
-        document.getElementById(target).style.display = 'block';
-      }
+    /*Xóa dữ liệu tạm trên sessionStore khi click*/
+    function closethebutton(){
 
-    function hide(target) {
-        document.getElementById(target).style.display = 'none';
-      }
+        sessionStorage.removeItem('currenttimeloginreadask');
+    }
+
+      //       // Save data to sessionStorage
+      // sessionStorage.setItem('key', 'value');
+
+      // // Get saved data from sessionStorage
+      // var data = sessionStorage.getItem('key');
+
+      // // Remove saved data from sessionStorage
+      // sessionStorage.removeItem('key');
+
+      // // Remove all saved data from sessionStorage
+      // sessionStorage.clear();
+
+    
+    /*ẩn hiện*/
+    // function show(target) {
+    //     document.getElementById(target).style.display = 'block';
+    //   }
+
+    // function hide(target) {
+    //     document.getElementById(target).style.display = 'none';
+    //   }
 
     /*end of ẩn hiện*/
 

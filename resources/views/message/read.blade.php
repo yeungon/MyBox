@@ -72,10 +72,10 @@
              {{-- Close the message --}}
             
             <form class="form-horizontal" style="display: inline; padding-left: 15px" method="GET" action="{{ route('home') }}">
-             <button type="submit" class="btn btn-danger btn-xs" id='thebutton'>Close</button>
+             <button onclick="closethebutton()" type="submit" class="btn btn-danger btn-xs" id='thebutton'>Close</button>
             </form>
 
-            <strong><span style="color: green; padding-left: 5px" id='Label1'></span></strong> left to read the messages.
+            <strong><span style="color: green; padding-left: 5px" id='timetoread'></span></strong> left to read the messages.
 
             {{-- <input type='submit' id='thebutton' onclick="document.getElementById('Label2').innerHTML = 'Clicked!'"></input>  --}}
             
@@ -105,7 +105,7 @@
 
                 {{-- {{$message->message}} --}}
                 {{-- privatekey truyền sang từ session --}}
-                {{sodium_crypto_box_seal_open(base64_decode($message->encrypted), base64_decode($privatekey))}}
+                {{sodium_crypto_box_seal_open(decrypt($message->encrypted), decrypt($privatekey))}}
                 
                 </td>
                                         
@@ -146,17 +146,50 @@
 </div>
 
 <script type="text/javascript">
-    time = 60;
+ 
+   
+  
+    {{-- lấy thời gian sau khi decipher - Get the current second left after providing private key--}}
+    
+    var now = sessionStorage.getItem("currenttimeloginreadmessage");
+
+    if(now == null){
+      time = 60;
+    }else if(now <= 60 && now >0){
+      time = now;
+    }else{
+      time = 60;
+    }
+    
     interval = setInterval(function() {
         time--;
-        document.getElementById('Label1').innerHTML = "" + time + " seconds"
-        if (time == 0) {
+        
+        document.getElementById('timetoread').innerHTML = "" + time + " s";
+
+        /*lưu giữ thời gian hiện tại
+        * @see https://toidicode.com/localstorage-va-sessionstorage-189.html
+        * @see https://www.w3schools.com/jsref/prop_win_sessionstorage.asp
+        */
+        sessionStorage.setItem("currenttimeloginreadmessage", time);
+
+      if (time == 0) {
             // stop timer
             clearInterval(interval);
             // click
-            document.getElementById('thebutton').click();            
+            document.getElementById('thebutton').click();
+
+            /*Xóa sessionStorage*/// 
+
+            sessionStorage.removeItem('currenttimeloginreadmessage');         
         }
+
     }, 1000)
+
+    /*Xóa dữ liệu tạm trên sessionStore khi click*/
+    function closethebutton(){
+
+        sessionStorage.removeItem('currenttimeloginreadmessage');
+    }
 
 </script>
 

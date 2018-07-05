@@ -59,7 +59,7 @@ class AskController extends Controller
         /*Validate private key */
          $valid = Validator::make($request->all(), [
             
-            'privatekey' => 'required|min:88|max:88',
+            'privatekey' => 'required|min:290|max:310',
                     
         ],[
             /*Customeize the error*/
@@ -115,7 +115,7 @@ class AskController extends Controller
 
         }
         
-        $decrypted = sodium_crypto_box_seal_open(base64_decode($encrypted), base64_decode($privatekeysession));
+        $decrypted = sodium_crypto_box_seal_open(decrypt($encrypted), decrypt($privatekeysession));
 
             
         if ($decrypted === false) {
@@ -241,9 +241,9 @@ class AskController extends Controller
 
                 $asksid = $request->input('asksid');
 
-                $ciphertext = sodium_crypto_box_seal($message, base64_decode($publickey));
+                $ciphertext = sodium_crypto_box_seal($message, decrypt($publickey));
 
-                $encrypted = base64_encode($ciphertext);
+                $encrypted = encrypt($ciphertext);
 
 
                 /*create a new array of data*/
@@ -275,7 +275,19 @@ class AskController extends Controller
         /*Lấy session sau khi xóa và truyền ngược lại route('ask.read')*/
         $data = $request->session()->get('privatekey');
 
-        return redirect()-> route('ask.read')->with('message', "The question $asksid is published!")->with(["privatekey" => $data]);
+        /*tùy chỉnh thông báo*/
+
+        if($publish =='2'){
+            
+            $message = "The question $asksid is being published!";
+
+        }else{
+
+            $message = "The question $asksid is being saved as pending!";
+        }
+
+
+        return redirect()-> route('ask.read')->with('message', $message)->with(["privatekey" => $data]);
 
 
     }
@@ -313,9 +325,9 @@ class AskController extends Controller
                 $replyid = $request->input('replyid');
 
 
-                $ciphertext = sodium_crypto_box_seal($replymessage, base64_decode($publickey));
+                $ciphertext = sodium_crypto_box_seal($replymessage, decrypt($publickey));
 
-                $encrypted = base64_encode($ciphertext);
+                $encrypted = encrypt($ciphertext);
 
                 $reply = Reply::find($replyid);
 

@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading"><b>Verify your identificatoin to edit your key:</b></div>
 
@@ -16,18 +16,25 @@
                         @if(session('message'))
 
                         <div class="alert alert-danger">
-                            {{session('message')}}
+                            {!!session('message')!!}
+                        </div>
+                        @endif
+
+                         @if(session('tinnhan'))
+
+                        <div class="alert alert-success">
+                            {!!session('tinnhan')!!}
                         </div>
                         @endif
 
                         {{-- end of anouncement --}}
                                               
-                        <form class="form-horizontal" method="POST" style="display: inline!important;" action="{{route('key.editstore')}}">
+                        <form id = "editkey" class="form-horizontal" method="POST" style="display: inline!important;" action="{{route('key.editstore')}}">
                             {{ csrf_field() }}
 
 
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Your current password: </label>
+                                <label for="password" class="col-md-4 control-label">Your current password <span style="font-weight: normal!important">(required):</span> </label>
 
                                 <div class="col-md-6">
                                     <input id="password" type="password" class="form-control" name="password" required>
@@ -41,7 +48,7 @@
                               </div>
 
                             <div class="form-group{{ $errors->has('newpassword') ? ' has-error' : '' }}">
-                                <label for="newpassword" class="col-md-4 control-label">Your new password: </label>
+                                <label for="newpassword" class="col-md-4 control-label">Your new password <span style="font-weight: normal!important">(if you wish):</span></label>
 
                                 <div class="col-md-6">
                                     <input id="newpassword" type="password" class="form-control" name="newpassword" required>
@@ -55,7 +62,7 @@
                             </div>
 
                              <div class="form-group">
-                                <label for="newpassword-confirm" class="col-md-4 control-label">Confirm new password</label>
+                                <label for="newpassword-confirm" class="col-md-4 control-label">Confirm new password  <span style="font-weight: normal!important">(required if you want to change password):</span> </label>
 
                                 <div class="col-md-6">
                                     <input id="newpassword-confirm" type="password" class="form-control" name="newpassword-confirm" required>
@@ -64,7 +71,7 @@
 
 
                             <div class="form-group{{ $errors->has('privatekey') ? ' has-error' : '' }}">
-                                <label for="privatekey" class="col-md-4 control-label">Your current private key: </label>
+                                <label for="privatekey" class="col-md-4 control-label">Your current private key:  <span style="font-weight: normal!important">(required if you want to retain your current data):</span>  </label>
                                 <div class="col-md-6">
                                     <input id="privatekey" type="password" class="form-control" name="privatekey">
 
@@ -76,12 +83,25 @@
                                 </div>
                               </div>
 
-                            <span style="padding-left: 255px">
-                                <button type="submit" class="btn btn-primary btn-xs">Edit</button>
+                            <span style="padding-left: 35%">
+                                
+
+                                {{-- <button id="editkey"></button> --}}
+                             
+
+                             <a href="{{route('key.editstore')}}" class ='btn btn-danger btn-xs'
+                                                  onclick="event.preventDefault();
+
+                                                  window.confirm('Do you really want to edit your key? Your current data is likely being deleted if you do not provide the current private key! Click on Cancel to return back!') ? // nếu đồng ý
+                                                  document.getElementById('editkey').submit() : 0; // nếu không đồng ý trả về 0, submit form có id editkey
+
+                            ">Change</a>
+                        
                            </span>
 
 
                         </form>
+
 
                         {{--cancel form  --}}
                         <form class="form-horizontal" method="get" style="display: inline!important; padding-left: 5px;" action="{{route('home')}}">
@@ -91,10 +111,15 @@
                                     </button>
                         </form>
                         {{-- cancel form --}}
+                        <div style="padding-left: 3%;">
                             <br>
-                            <strong>Noted:</strong>
-                            <p>1. The private key is not required to edit your profile. However, if you cannot provide your current private key, your existing messages will be subsequently eradicated.</p>
-                            <p>2. Both new public and private keys will be created for encryption and decryption current and upcoming messages. </p>
+                            <br>
+                            <strong>Note:</strong>
+                            <p>1. The <strong>private key</strong> is not required to edit your profile. However, if you donot provide your current private key, your existing messages, status and questions will be subsequently <strong style="color: red">eradicated.</strong></p>
+                            <p>2. Both new public and private keys will be created for encryption and decryption current and upcoming messages if your current private key is given. </p>
+                            <p>3. You can leave both the new <strong>password</strong> and <strong>confirm new password</strong> inputs as blank if you do not want to change your current password.</p>
+                            <p>4. For security purpose, you cannot change your current password and retain your current data if you are not able to provide your current private key.</p>
+                        </div>
 
                     </div>
                 </div>

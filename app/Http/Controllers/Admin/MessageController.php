@@ -45,7 +45,7 @@ class MessageController extends Controller
 
 //        $secret_key = sodium_crypto_secretbox_keygen();
 //
-//        echo "Khóa mật: ", base64_encode($secret_key);
+//        echo "Khóa mật: ", encrypt($secret_key);
 //
 //        echo "<br>";
 //
@@ -56,11 +56,11 @@ class MessageController extends Controller
         $secretKey = sodium_crypto_sign_secretkey($mySigningKeypair);
         $publicKey = sodium_crypto_sign_publickey($mySigningKeypair);
 
-        echo "Khóa phụ:", base64_encode($publicKey);
+        echo "Khóa phụ:", encrypt($publicKey);
 
         echo "<br>";
 
-        echo "Khóa chính:", base64_encode($secretKey);
+        echo "Khóa chính:", encrypt($secretKey);
 
         echo "<br>";
 
@@ -72,7 +72,7 @@ class MessageController extends Controller
     /* Sign the message, using your secret key (which is NOT given out): */
         $signature = sodium_crypto_sign_detached($message, $secretKey);
 
-    //echo base64_encode($signature);
+    //echo encrypt($signature);
 
 
     /* Now validate the signature with your public key (which IS given out): */
@@ -108,24 +108,15 @@ class MessageController extends Controller
 
         $private = 'Gl+gqRll+1ohNzb3TpREixlg/aMNmty9wfC/RjK6Rs6akE9jq8Vde9onp8AZq9ViMRN0juna4ytya9e+2e9aPw==';
 
-        echo "<br>";
-
-        echo "Key chính: ", base64_encode($bobKeypair);
-
-        echo "<br>";
-
-
-        echo "Key  phụ: ", base64_encode($bobPublicKey);
-
-         
+               
 
         $message = "Nội dung thư mật là gì? có ai biết? khá là vất vả :-) nội dung thư mới";
 
         /*mỗi lần cập nhât message là ciphertext sẽ thay đổi*/
 
-        $ciphertext = sodium_crypto_box_seal($message, base64_decode($key));
+        $ciphertext = sodium_crypto_box_seal($message, decrypt($key));
 
-        $ciphertextdata = base64_encode($ciphertext);
+        $ciphertextdata = encrypt($ciphertext);
 
         echo "<br>";
 
@@ -137,12 +128,12 @@ class MessageController extends Controller
     /* On Node B, receiving an encrypted message from Node A */
 
 
-    $data = base64_decode($noidung);
+    $data = decrypt($noidung);
 
     echo "<br>";
 
 
-    echo $decrypted = sodium_crypto_box_seal_open($data, base64_decode($private));
+    echo $decrypted = sodium_crypto_box_seal_open($data, decrypt($private));
 
 
     }
@@ -200,7 +191,6 @@ class MessageController extends Controller
             /*mã hóa tiếng việt*/
             'message.required' => 'Vui lòng nhập message',
         
-
         ]);
 
         /*xử lý dữ liệu đầu vào, nếu lỗi thì trả lại trang create*/
@@ -218,9 +208,9 @@ class MessageController extends Controller
                
                 $message = $request->input('message');
 
-                $ciphertext = sodium_crypto_box_seal($message, base64_decode($publickey));
+                $ciphertext = sodium_crypto_box_seal($message, decrypt($publickey));
 
-                $encrypted = base64_encode($ciphertext);
+                $encrypted = encrypt($ciphertext);
 
 
                 /*create a new array of data*/
@@ -233,7 +223,7 @@ class MessageController extends Controller
                                      
                 ]);
 
-                return redirect()-> route('home')->with('message', "The message $message->encrypted has been successfully created.");
+                return redirect()-> route('home')->with('message', "The message <pre>$message->encrypted</pre> has been successfully created.");
         }
 
     }

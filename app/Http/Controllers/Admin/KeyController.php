@@ -2,12 +2,15 @@
 
 
 namespace App\Http\Controllers\Admin;
-
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\Message;
+use App\Ask;
+use App\Reply;
+use Session;
 
 
 class KeyController extends Controller
@@ -94,19 +97,11 @@ class KeyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    /*HÀM NÀY KHÔNG DÙNG*/
     public function update(Request $request)
     {
-        /*
-        * dd($request->all());
-        *hàm dd để debug
-        *Khi nhấn nút click sẽ hiện ra giá trị form gửi lên. :-)
-        */
-       
-       //dd($request->all());
-
         /*xác thực dữ liệu đầu vào của form create chuyên mục*/
-
-           
+          
         $valid = Validator::make($request->all(), [
             
             'masterkey' => 'required',
@@ -153,8 +148,8 @@ class KeyController extends Controller
                 $PublicKey = sodium_crypto_box_publickey($Keypair);
 
                 /*Convert to encrypted string, that can be stored in database*/
-                $public = base64_encode($PublicKey);
-                $private = base64_encode($Keypair);
+                $public = encrypt($PublicKey);
+                $private = encrypt($Keypair);
 
                 // Then share $bobPublicKey with Node A
 
@@ -206,6 +201,7 @@ class KeyController extends Controller
         
         $data['publickey'] = $user->publickey;
 
+
         $data['user']  = User::where('id', $id)->first();
 
         return view('account/editkey', $data);
@@ -221,19 +217,19 @@ class KeyController extends Controller
     public function storetoeditkey(Request $request)
     {
         
-             
-        /*Verify to edit*/
+        
+       /*Verify to edit*/
          $valid = Validator::make($request->all(), [
             
-            'password' => 'required|confirmed',
+            'password' => 'required',
             
             // 'privatekey' => 'min:88|max:88',
          
         ],[
             /*Customeize the error*/
-            'password.required' => 'You need to authorize your confidential',
-            'privatekey.min' => 'Private key seems tobe to short!',
-            'privatekey.max' => 'Private key seems tobe to long!',
+            'password.required' => 'You need to authorize your access before changing your profile',
+            // 'privatekey.min' => 'Private key seems tobe to short!',
+            // 'privatekey.max' => 'Private key seems tobe to long!',
         ]);
 
        
@@ -253,10 +249,11 @@ class KeyController extends Controller
                 $privatekeyinput = $request->input('privatekey');
         }
 
-        /*Lấy giá trị từ user hiện tại: Get the masterkey */
+        /*Lấy giá trị từ user hiện tại: Get the public key */
         $user = \Auth::user();
-        $masterkey = $user->masterkey;
+        $publickey = $user->publickey;
         $id = $user->id;
+        
         $passworddata = $user->password;
 
         $data['publickey'] = $user->publickey;
@@ -267,15 +264,27 @@ class KeyController extends Controller
         /*Verify password*/
         if(password_verify($password, $passworddata) === true){
 
-                if ($newpassword === $password) {
-                    
-                    return redirect()->back()->with('message', "Your new password is similar to the current password!");
-                }
+            /*Nếu nhập new password*/
+            if(!empty($newpassword)){
 
-                if ($newpassword !== $newpasswordconfirm) {
-                    
-                    return redirect()->back()->with('message', "The new password need to be similar to confirmation");
-                }
+                            if ($newpassword === $password) {
+                                
+                                return redirect()->back()->with('message', "Your new password is similar to the current password!");
+                            }
+
+                            if ($newpassword !== $newpasswordconfirm) {
+                                
+                                return redirect()->back()->with('message', "The new password need to be similar to password confirmation");
+                            }
+
+                            if (strlen($newpassword) <6) {
+                                
+                                return redirect()->back()->with('message', "The new password should have at least 6 characters");
+                            }
+            }
+
+            $newpassword = $request->input('newpassword');
+
                 
         }else{
 
@@ -287,108 +296,527 @@ class KeyController extends Controller
 
                     /*Verify */
                     $messages = Message::where('usersid', '=', $id)->take(1)->get();
+                    $asks = Ask::where('usersid', '=', $id)->take(1)->get();
 
-                    /*If you dont have any message, you cannot go forward*/
-                    if(count($messages) === 0){
-                       
-                        return redirect()->back()->with('message', "Opp!, it appears that you donot have any message at the moment! Create one first! ");
+                    /*If you dont have any message, a new public and private key will be created**************************************
+                    ***************** BẮT BUỘC PHẢI TẠO LẠI KEY MỚI VÌ TRONG DATABASE KHÔNG CÓ NỘI DUNG ĐỂ VERIFY KEY*****************
+                    */
 
-                    }else{
+                    if(count($messages) === 0 && count($asks) ===0){
+                        
+                        /*vì không có message nào nên không thể verify*/
 
-                        foreach ($messages as $message) {
-                        $encrypted = $message->encrypted;    
-                                              
+                        $privateKey  = sodium_crypto_box_keypair();
+                        $publicKey  = sodium_crypto_box_publickey($privateKey);
+
+
+                        /*Convert to encrypted string, that can be stored in database*/
+                        $public = encrypt($publicKey);
+                        $private = encrypt($privateKey);
+
+                        /*Cập nhật database*/
+                        $keys = User::find($id);
+                        $keys->username  = $user->username;
+                        $keys->publickey = $public;
+                        
+                        /*Nếu có new password thì cập nhật*/
+                        if($newpassword == true){
+
+                            $keys->password  = bcrypt($newpassword);            
+                        }
+
+                        $keys->save();
+                        
+                        /*Nếu đổi mật khẩu thì logout*/
+                        if($newpassword == true){
+                             /*xóa session để bắt login lại*/
+                            Session::flush();
+
+                            return redirect()->route('home.index')->with('message', "Opp!, it appears that you donot have any status or question at the moment! Create one first! Your new private key is therefore issued as the following:
+                                <br>
+                                <pre>$private</pre>
+                                <br>
+                                You should keep this private key in secret!
+                                <br>
+                                Your password is also updated! You can re-login with your new password from now on.
+
+                            ");
+
+                        }else{
+
+                            return redirect()->back()->with('tinnhan', "Opp!, it appears that you donot have any status or question at the moment! Create one first! 
+                            <br>
+                            Your new private key is therefore issued as the following: <pre>$private</pre>. 
+                            <br>
+
+                            You have to keep this private key in secret. Your previous private key is no longer applicable.
+                            ");
+
+                        }
+                    
+                    /*****************************************************************************************************
+                        else => Nếu có bài viết hoặc ask, có thể xác thực và sau đó GIẢI MÃ -> MÃ HÓA LẠI -> LƯU LẠI VÀO MẬT KHẨU
+                    *******************************************************************************************************
+                    */
+
+                    }else{ 
+
+                        $encrypted = false;
+
+                        if (count($messages)>0){
+                                foreach ($messages as $message) {
+                                $encrypted = $message->encrypted;    
+                            }
+                        }
+
+                        $encryptedask = false;
+
+                        if(count($asks) >0 ){
+                                foreach ($asks as $ask) {
+                                $encryptedask = $ask->ask;    
+                            }
                         }
                     }
                     
                     /*Verify privatekey*/
-                    if(strlen($privatekeyinput) < 88){
+                    if(strlen($privatekeyinput) < 290){
 
                             return redirect()->back()->with('message', "The privatekey is too short and incorrect!");
 
-                        }elseif (strlen($privatekeyinput) > 88) {
+                        }elseif (strlen($privatekeyinput) > 310) {
 
                             return redirect()->back()->with('message', "The privatekey is too long and incorrect!");
                     }else{
-                            $decrypted = sodium_crypto_box_seal_open(base64_decode($encrypted), base64_decode($privatekeyinput));
-                       
-                            if ($decrypted === false) {
-                                
-                                 return redirect()->back()->with('message', "The privatekey is incorrect!");
 
-                            }else{
+                            /*********************************************************************************************************
+                                                    nếu có status trong database để verify
+                            **********************************************************************************************************/
+                            if($encrypted == true){
 
-                                   // đang ở đây sau khi đã xác thực private key
-                                   $data['privatekey'] = $privatekeyinput;
-                         
+                                    $decrypted = sodium_crypto_box_seal_open(decrypt($encrypted), decrypt($privatekeyinput));
+                               
+                                    if ($decrypted === false) {
+                                        
+                                         return redirect()->back()->with('message', "The privatekey is incorrect!");
+
+                                    }else{
+
+                                            /*UPDATE THE MESSAGE*/
+                                            $messages = Message::where('usersid', $id)->get();
+                                           
+                                            /*thêm một item là private key vào collection ==> KHÔNG CẦN*/
+
+                                            //$messages->prepend($privatekeyinput);
+
+                                            /*Giải mã và chuyển sang plain text, then encrypt again with new key issued afterwards
+                                            Noted: Dùng closure use($variable) để truyền dữ liệu vào trong call-back function*/
+                                            $messages->transform(function ($item, $key)use($privatekeyinput) {
+
+                                                $item->encrypted = sodium_crypto_box_seal_open(decrypt($item->encrypted), decrypt($privatekeyinput));
+                                            
+                                                return $item;
+                                              
+                                            });
+                                                                                                                                 
+                                           /*Issued NEW KEYS*/
+                                            $privateKey  = sodium_crypto_box_keypair();
+                                            $publicKey  = sodium_crypto_box_publickey($privateKey);
+
+                                            /*Convert to string that can be stored in database using asymetric encryption provided by Laravel (OpenSSL)*/
+                                            $newpublic = encrypt($publicKey);
+                                            $newprivate = encrypt($privateKey);
+
+                                            /*MÃ HÓA LẠI - Re-encryp*/
+                                            $messages->transform(function ($item, $key)use($newpublic) {
+
+                                                $item->encrypted = sodium_crypto_box_seal($item->encrypted, decrypt($newpublic));
+                                                                
+                                                $item->encrypted = encrypt($item->encrypted);
+                                                                                            
+                                                return $item;
+                                              
+                                            });
+                                            
+                                            foreach ($messages as $message) {
+                                                
+                                                //UPDATE NEW ENCRYPTED DATA TO THE DATABASE
+                                                $newmessage = Message::find($message->id);
+                                                $newmessage->message  = "updated on okey $message->updated_at".$message->message;
+                                                $newmessage->encrypted = $message->encrypted;
+                                                $newmessage->usersid = $message->usersid;
+                                                $newmessage->created_at = $message->created_at;
+                                                $newmessage->save();
+                                            }
+
+                                            /*UPDATE THE ASK/QUESTIONS, nếu có ASK sẽ có REPLY*/
+                                            $asks = Ask::where('usersid', $id)->get();
+
+                                            if(count($asks)>0){
+
+                                                /*Giải mã và chuyển sang plain text, then encrypt again with new key issued afterwards privatekeyinput là KEY hiện tại nhập từ input*/
+                                                $asks->transform(function ($item, $key)use($privatekeyinput) {
+
+                                                    $item->ask = sodium_crypto_box_seal_open(decrypt($item->ask), decrypt($privatekeyinput));
+                                            
+                                                    return $item;                                              
+                                                });
+
+                                                /*DECRYPT AGAIN AND UPDATE THE DATABSE*/
+                                                $asks->transform(function ($item, $key)use($newpublic) {
+
+                                                    /*encypt using Sodium*/
+                                                    $item->ask = sodium_crypto_box_seal($item->ask, decrypt($newpublic));
+                                                    /*encrypt using OpenSSL*/
+                                                    $item->ask = encrypt($item->ask);
+                                            
+                                                    return $item;                                              
+                                                });
+                                                /*Iterating and store to the database*/
+
+                                                foreach ($asks as $ask) {
+                                                   
+                                                    //UPDATE NEW ENCRYPTED DATA TO THE DATABASE
+                                                    $newask = Ask::find($ask->id);
+                                                    $newask->ask        = $ask->ask;
+                                                    $newask->usersid    = $ask->usersid;
+                                                    $newask->publish    = $ask->publish;
+                                                    $newask->created_at = $ask->created_at;
+                                                    $newask->save();
+                                                }
+                                            }
+
+                                            /*UPDATE THE REPLY, nếu có ASK sẽ có REPLY*/
+                                            $replies = Reply::where('usersid', $id)->get();
+
+                                            if(count($replies)>0){
+
+                                                /*Giải mã và chuyển sang plain text, then encrypt again with new key issued afterwards privatekeyinput là KEY hiện tại nhập từ input*/
+                                                $replies->transform(function ($item, $key)use($privatekeyinput) {
+
+                                                    $item->reply = sodium_crypto_box_seal_open(decrypt($item->reply), decrypt($privatekeyinput));
+                                            
+                                                    return $item;                                              
+                                                });
+
+                                                /*DECRYPT AGAIN AND UPDATE THE DATABSE*/
+                                                $replies->transform(function ($item, $key)use($newpublic) {
+
+                                                    /*encypt using Sodium*/
+                                                    $item->reply = sodium_crypto_box_seal($item->reply, decrypt($newpublic));
+                                                    /*encrypt using OpenSSL*/
+                                                    $item->reply = encrypt($item->reply);
+                                            
+                                                    return $item;                                              
+                                                });
+                                                /*Iterating and store to the database*/
+
+                                                foreach ($replies as $reply) {
+                                                   
+                                                    //UPDATE NEW ENCRYPTED DATA TO THE DATABASE
+                                                    $newreply = Reply::find($reply->id);
+                                                    $newreply->reply      = $reply->reply;
+                                                    $newreply->usersid    = $reply->usersid;
+                                                    $newreply->asksid     = $reply->asksid;
+                                                    $newreply->created_at = $reply->created_at;
+                                                    $newreply->save();
+                                                }
+                                            }
+
+                                             /*UPDATE NEW PUBLIC KEY AND NEW PASSWORD IF SELECTED*/
+                                            $users = User::find($id);
+                                            $users->publickey = $newpublic;
+                                            
+                                            /*Nếu có new password thì cập nhật, NẾU KHÔNG THÌ DÙNG LẠI password cũ*/
+                                            if($newpassword == true){
+                                                $users->password  = bcrypt($newpassword);
+
+                                            }
+
+                                            $users->save();
+                                            
+                                            /*Nếu có new password thì DELETE SESSION AND ASK RE-LOGIN*/
+                                            if($newpassword == true){
+                                                 /*xóa session để bắt login lại*/
+                                                Session::flush();
+
+                                                return redirect()->route('home.index')->with('message', "Your profile has been updated and your new privatekey is issued as below:
+                                                    <br>
+                                                    <pre>$newprivate</pre>
+                                                    <br>
+                                                    You should keep this private key in secret!
+                                                    <br>
+                                                    Your password is also updated! You can re-login with your new password from now on.
+
+                                                ");
+
+                                            }else{
+
+                                                    return redirect()->back()->with('message', "Your profile has been updated and your new privatekey is issued as below:
+                                                    <br>
+                                                    <pre>$newprivate</pre>
+                                                    <br>
+                                                    You should keep this private key in secret!
+                                                    <br>                                                    
+                                                ");
+                                            }
+
+                                        }
+
+                                    } // end of xác thực key với message
+
+                            
+                                    /*********************************************************************************************************
+                                                            nếu chỉ có question trong database để verify
+                                    **********************************************************************************************************/
+                                    if($encryptedask == true){
+
+                                            $encryptedaskdecrypted = sodium_crypto_box_seal_open(decrypt($encryptedask), decrypt($privatekeyinput));
+                                       
+                                            if ($encryptedaskdecrypted === false) {
+                                                
+                                                 return redirect()->back()->with('message', "The privatekey is incorrect!");
+
+                                            }else{
+
+                                            /*ĐỔI DỮ LIỆU CHO ASK VÀ REPLY*/
+                                            /*UPDATE THE ASK/QUESTIONS, nếu có ASK sẽ có REPLY*/
+                                            $asks = Ask::where('usersid', $id)->get();
+
+                                            if(count($asks)>0){
+
+                                                /*Giải mã và chuyển sang plain text, then encrypt again with new key issued afterwards privatekeyinput là KEY hiện tại nhập từ input*/
+                                                $asks->transform(function ($item, $key)use($privatekeyinput) {
+
+                                                    $item->ask = sodium_crypto_box_seal_open(decrypt($item->ask), decrypt($privatekeyinput));
+                                            
+                                                    return $item;                                              
+                                                });
+
+                                                /*CREATE NEW PUBLIC AND PRIVATE KEY*/
+                                                $privateKey  = sodium_crypto_box_keypair();
+                                                $publicKey  = sodium_crypto_box_publickey($privateKey);
+
+                                                /*Convert to string that can be stored in database using asymetric encryption provided by Laravel (OpenSSL)*/
+                                                $newpublic = encrypt($publicKey);
+                                                $newprivate = encrypt($privateKey);
+
+                                                /*DECRYPT AGAIN AND UPDATE THE DATABSE*/
+                                                $asks->transform(function ($item, $key)use($newpublic) {
+
+                                                    /*encypt using Sodium*/
+                                                    $item->ask = sodium_crypto_box_seal($item->ask, decrypt($newpublic));
+                                                    /*encrypt using OpenSSL*/
+                                                    $item->ask = encrypt($item->ask);
+                                            
+                                                    return $item;                                              
+                                                });
+                                                /*Iterating and store to the database*/
+
+                                                foreach ($asks as $ask) {
+                                                   
+                                                    //UPDATE NEW ENCRYPTED DATA TO THE DATABASE
+                                                    $newask = Ask::find($ask->id);
+                                                    $newask->ask        = $ask->ask;
+                                                    $newask->usersid    = $ask->usersid;
+                                                    $newask->publish    = $ask->publish;
+                                                    $newask->created_at = $ask->created_at;
+                                                    $newask->save();
+                                                }
+                                            }
+
+                                            /*UPDATE THE REPLY, nếu có ASK sẽ có REPLY*/
+                                            $replies = Reply::where('usersid', $id)->get();
+
+                                            if(count($replies)>0){
+
+                                                /*Giải mã và chuyển sang plain text, then encrypt again with new key issued afterwards privatekeyinput là KEY hiện tại nhập từ input*/
+                                                $replies->transform(function ($item, $key)use($privatekeyinput) {
+
+                                                    $item->reply = sodium_crypto_box_seal_open(decrypt($item->reply), decrypt($privatekeyinput));
+                                            
+                                                    return $item;                                              
+                                                });
+
+
+                                                /*DECRYPT AGAIN AND UPDATE THE DATABSE*/
+                                                $replies->transform(function ($item, $key)use($newpublic) {
+
+                                                    /*encypt using Sodium*/
+                                                    $item->reply = sodium_crypto_box_seal($item->reply, decrypt($newpublic));
+                                                    /*encrypt using OpenSSL*/
+                                                    $item->reply = encrypt($item->reply);
+                                            
+                                                    return $item;                                              
+                                                });
+                                                /*Iterating and store to the database*/
+
+                                                foreach ($replies as $reply) {
+                                                   
+                                                    //UPDATE NEW ENCRYPTED DATA TO THE DATABASE
+                                                    $newreply = Reply::find($reply->id);
+                                                    $newreply->reply      = $reply->reply;
+                                                    $newreply->usersid    = $reply->usersid;
+                                                    $newreply->asksid     = $reply->asksid;
+                                                    $newreply->created_at = $reply->created_at;
+                                                    $newreply->save();
+                                                }
+                                            }
+
+                                             /*UPDATE NEW PUBLIC KEY AND NEW PASSWORD IF SELECTED*/
+                                            $users = User::find($id);
+                                            $users->publickey = $newpublic;
+                                            
+                                            /*Nếu có new password thì cập nhật, NẾU KHÔNG THÌ DÙNG LẠI password cũ*/
+                                            if($newpassword == true){
+                                                $users->password  = bcrypt($newpassword);
+
+                                            }
+
+                                            $users->save();
+                                            
+                                            /*Nếu có new password thì DELETE SESSION AND ASK RE-LOGIN*/
+                                            if($newpassword == true){
+                                                 /*xóa session để bắt login lại*/
+                                                Session::flush();
+
+                                                return redirect()->route('home.index')->with('message', "Your profile has been updated and your new privatekey is issued as below:
+                                                    <br>
+                                                    <pre>$newprivate</pre>
+                                                    <br>
+                                                    You should keep this private key in secret!
+                                                    <br>
+                                                    Your password is also updated! You can re-login with your new password from now on.
+
+                                                ");
+
+                                            }else{
+
+                                                    return redirect()->back()->with('message', "Your profile has been updated and your new privatekey is issued as below:
+                                                    <br>
+                                                    <pre>$newprivate</pre>
+                                                    <br>
+                                                    You should keep this private key in secret!
+                                                    <br>                                                    
+                                                ");
+                                            }
+    
+                                        }
+                                    } // end of xác thực key với question
                             }
+                            //return redirect()->back()->with('message', "The privatekeyinput không empty!");
 
+
+        /*********************************************************************************************************
+                                  else  nếu KHÔNG CÓ private key, bắt buộc phải XÓA data
+        **********************************************************************************************************/
+        }else{ 
+           
+           /***************************************************************
+            *Nếu nhập new password để TẠO MẬT KHẨU MỚI,
+            *************************************************************/
+            
+            if(!empty($newpassword)){
+
+                    if ($newpassword === $password) {
+                        
+                        return redirect()->back()->with('message', "Your new password is similar to the current password!");
                     }
 
-                    //return redirect()->back()->with('message', "The privatekeyinput không empty!");
+                    if ($newpassword !== $newpasswordconfirm) {
+                        
+                        return redirect()->back()->with('message', "The new password need to be similar to password confirmation");
+                    }
+
+                    if (strlen($newpassword) <6) {
+                                
+                                return redirect()->back()->with('message', "The new password should have at least 6 characters");
+                    }
+
+                    /*Mật khẩu mới*/
+                    $newpassword = $request->input('newpassword');
+
+                    /*Xóa dữ liệu cũ*/
+                    Message::where('usersid', $id)->delete();
+                    // DB::delete('DELETE FROM users WHERE id = 1');
+                    // để xóa khi có khóa ngoại, xóa yếu tố ràng buộc trước https://laravel.com/docs/5.5/queries#deletes
+
+                    //DB::table('replies')->where('usersid', '=', $id)->delete();cách này okey
+
+                    Reply::where('usersid', $id)->delete();
+
+                    Ask::where('usersid', $id)->delete();
+
+                    $privateKey  = sodium_crypto_box_keypair();
+                    $publicKey  = sodium_crypto_box_publickey($privateKey);
+                        
+
+                    /*Convert to encrypted string, that can be stored in database*/
+                    $public = encrypt($publicKey);
+                    $private = encrypt($privateKey);
+
+                    /*Cập nhật database*/
+                    $users = User::find($id);
+                    $users->publickey = $public;
+                    $users->password  = bcrypt($newpassword);            
+                    $users->save();
+                    
+                    /*xóa session để bắt login lại*/
+                    Session::flush();
+
+                    return redirect()->route('home.index')->with('message', "Your current messages are deleted and your new privatekey is issued as below:
+                        <br>
+                        <pre>$private</pre>
+                        <br>
+                        You should keep this private key in secret!
+                        <br>
+                        Your password is also updated! You can re-login with your new password from now on.
+
+                    ");
+
+            /***************************************************************
+            *Nếu KHÔNG NHẬP new password
+            *************************************************************/
+            }else{
+                 
+                 /*Nếu không đổi password*/
+
+                 /*Xóa dữ liệu cũ*/
+                    Message::where('usersid', $id)->delete();
+                    // DB::delete('DELETE FROM users WHERE id = 1');
+                    // để xóa khi có khóa ngoại, xóa yếu tố ràng buộc trước https://laravel.com/docs/5.5/queries#deletes
+
+                    //DB::table('replies')->where('usersid', '=', $id)->delete();cách này okey
+
+                    Reply::where('usersid', $id)->delete();
+                    Ask::where('usersid', $id)->delete();
+
+                    $privateKey  = sodium_crypto_box_keypair();
+                    $publicKey  = sodium_crypto_box_publickey($privateKey);
+                        
+
+                    /*Convert to encrypted string, that can be stored in database*/
+                    $public = encrypt($publicKey);
+                    $private = encrypt($privateKey);
 
 
-        }else{
+                    /*Cập nhật database*/
+                    $users = User::find($id);
+                    $users->publickey = $public;
+                    $users->save();
+                    
+                    return redirect()->back()->with('tinnhan', "Your current messages are deleted and your new privatekey is issued as below:
+                        <br>
+                        <pre>$private</pre>
+                        <br>
+                        You should keep this private key in secret!
+                        <br>
+                   ");
 
-            return redirect()->back()->with('message', "Your current messages are deleted and your new privatekey is created as below:");
-        }
-
-
-
-        // dd($request->all());
-            
-        /*ĐANG XỬ LÝ*/
-
-        if(password_verify($masterkeygiven, $masterkey) !== true){
-
-               /*'fail' flash messsage
-               https://stackoverflow.com/questions/37291975/in-laravel-5-how-to-customize-session-flash-message-with-href?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-               */
-              return redirect()->back()->with('message', "The masterkey is incorrect!");
-
-        }else{
-
-                               /* On Node B: */
-                $Keypair = sodium_crypto_box_keypair();
-                $PublicKey = sodium_crypto_box_publickey($Keypair);
-
-                /*Convert to encrypted string, that can be stored in database*/
-                $public = base64_encode($PublicKey);
-                $private = base64_encode($Keypair);
-
-                // Then share $bobPublicKey with Node A
-
-                # Transmission:
-
-                /* Sending from Node A to Node B */
-                //$message = 'Hi there! :)';
-                //$ciphertext = sodium_crypto_box_seal($message, $bobPublicKey);
-
-                /* On Node B, receiving an encrypted message from Node A */
-                //$decrypted = sodium_crypto_box_seal_open($ciphertext, $bobKeypair);
-        
-        }
-   
-        
-            $keys = User::find($id);
-
-            $keys->username  = $user->username;
-            $keys->publickey = $public;
-            $keys->masterkey = $masterkey;
-            $keys->email     = $user->email;
-            $keys->password  = $user->password;            
-            $keys->save();
-
-            
-            return redirect()-> route('home')->with('message', "Successfully create the publickeys. Your private key is: <br>
-
-                [__COPY_THE_BELOW__]</br> 
-
-                <b>$private </b><br>
-
-                [__COPY_THE_ABOVE_PRIVATE_KEY__]<br>. You have to keep this private key IN SECRET somewhere else.");
+               }
+         
+         }
+     
     }
-
 
     public function deleteaccountform()
     {
@@ -443,10 +871,6 @@ class KeyController extends Controller
     }
 
 
-
-
-
-
     public function verify()
     {
         
@@ -484,7 +908,7 @@ class KeyController extends Controller
         /*Validate private key */
          $valid = Validator::make($request->all(), [
             
-            'privatekey' => 'required|min:88|max:88',
+            'privatekey' => 'required|min:290|max:310',
                     
         ],[
             /*Customeize the error*/
@@ -543,7 +967,7 @@ class KeyController extends Controller
         /*Verify the private with sodium*/
 
         // try {
-        //     if(empty(sodium_crypto_box_seal_open(base64_decode($encrypted), base64_decode($privatekeysession)))) {
+        //     if(empty(sodium_crypto_box_seal_open(decrypt($encrypted), decrypt($privatekeysession)))) {
         //         throw new \Exception("The privatekey is incorrect!"); 
         //        }
                 
@@ -556,7 +980,7 @@ class KeyController extends Controller
            
         //   }
 
-        $decrypted = sodium_crypto_box_seal_open(base64_decode($encrypted), base64_decode($privatekeysession));
+        $decrypted = sodium_crypto_box_seal_open(decrypt($encrypted), decrypt($privatekeysession));
 
             
         if ($decrypted === false) {

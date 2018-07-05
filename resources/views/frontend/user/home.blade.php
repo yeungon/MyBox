@@ -25,9 +25,47 @@
     <link rel="stylesheet" href="{{asset('themes/appton/css/custom.css')}}">
     <!-- Favicon-->
     <link rel="shortcut icon" href="{{asset('themes/appton/img/favicon.png')}}">
+
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    {{-- test front front web ==> need to buy the licence--}}
+   {{--  <style type="text/css">
+    @font-face {
+      font-family: "NationalBook";
+      font-weight: 400;
+      src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-Book.woff");
+    }
+
+    </style> --}}
+
+    <style type="text/css">
+      
+     /*body{
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu; 
+      }*/
+
+
+    @font-face {
+      font-family: "Sailec";
+      font-weight: 400;
+      src: url("themes/appton/fonts/Sailec.otf");
+
+    }
+
+      
+     body{
+        font-family: Sailec,/*Helvetica Neue,Helvetica,Arial,sans-serif,*/ -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu!important; 
+        font-size: 15.5px;
+        
+      }
+
+
+
+    </style>
+
   </head>
   <body>
     <!-- navbar-->
@@ -114,20 +152,22 @@
         <h4 style="display: inline!important">Update</h4>
 
         {{-- Phần giải mã --}}
-        <span style="padding-left: 48%;">
-            <button style="display: inline!important; " class='btn btn-primary btn-sm btn-xs' data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed"><span> Read</span></button>
+        <span style="padding-left: 40%; display: inline!important; padding-bottom: 5%">
+            <button style="display: inline!important;" class='btn btn-primary btn-sm btn-xs' data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed"> Read</button>
         </span>
+        <br>
+        <br>
 
         <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion" class="collapse">
         <div class="card-body">
               {{-- begin --}}
-               <form class="form-horizontal" style="display: inline; padding-left: 20px" method="POST" action="{{ route('home.userread', ['username'=> $username, 'token' => sha1(rand(1, 1000))])}}">
+               <form class="form-horizontal" style="display: inline; padding-left: 15%" method="POST" action="{{ route('home.userread', ['username'=> $username, 'token' => sha1(rand(1, 1000))])}}">
                         {{ csrf_field() }}
                         
                         <div class="form-group{{ $errors->has('privatekey') ? ' has-error' : '' }}">
                                 <label for="privatekey" class="col-md-2 control-label">The private key: </label>
 
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     
                                     <input id="privatekey" type="password" class="form-control" name="privatekey" required>
                                     @if ($errors->has('privatekey'))
@@ -138,7 +178,7 @@
 
                                 </div>
                               </div>
-                              <span style="padding-left: 40%">
+                              <span style="padding-left: 20%">
                               <button type="submit" class="btn btn-primary btn-sm btn-xs">
                               Decipher
                               </button>
@@ -162,24 +202,35 @@
             <div id="accordion" class="faq accordion accordion-custom pb-5">
                     
               <!-- question        -->
-              <div class="card">
+              {{-- <div class="card" style="background: white!important;"> --}}
+
+
                 @if(count($messages)>0)
                     @foreach($messages as $message)
-                    <div id="headingTwo" class="card-header">
-                    <h4 class="mb-0 accordion-heading">
-                      <button aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed">
-                        <span class="iconmessage"><i class="icon-light-bulb"></i></span>
-                      <span id="timecreated"> Posted by <b>{{$username}}</b> at {{$message->created_at}}.</span>
-                      </button>
-
-                    </h4>
-                    </div>
+                    
+                    
+                      <div style="background-color: white;">
+                        <span class="iconmessage"><i class="icon-light-bulb" style="font-size: 150%; padding-right: 2%; margin-left: 0px" ></i></span>
+                      <span style="padding-left: 1%;" id="timecreated"> Posted by <b>{{$username}}</b> at {{$message->created_at}}.</span>
+                      
+                      </div>
                                         
-                    <textarea rows="4">{{$message->encrypted}}</textarea>                   
+                      <textarea rows="4" cols="75%">{{$message->encrypted}}</textarea>
+
+                      {{-- nút like/dislike --}}
+                          <br>
+                          
+                          <button class ="likebutton"  id="likebutton" style="pointer-events: auto; display: inline-block;!important" onclick="likeclick()" ><i class="far fa-thumbs-up"></i></button> <span id="datalike">0</span>
+
+                          <span style="padding-left: 2%; display: inline!important"></span>
+
+                          <button class ="likebutton" id="disklikebutton" style="pointer-events: auto;" onclick="dislikeclick()" ><i class="far fa-thumbs-down"></i></button> <span id="datadislike">0</span>
+
+                      {{-- end of nút like/dislike --}}
 
                     @endforeach
                 @endif
-              </div>
+              {{-- </div> --}} {{-- div class "card" --}}
              </div>
           </div>
       </div>
@@ -243,6 +294,11 @@
       </div>
     </footer>
     <!-- JavaScript files-->
+
+    <script type="text/javascript">
+        
+
+    </script>
     <script src="{{asset('themes/appton/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('themes/appton/vendor/popper.js/umd/popper.min.js')}}"> </script>
     <script src="{{asset('themes/appton/vendor/bootstrap/js/bootstrap.min.js')}}"></script>

@@ -29,6 +29,24 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <style type="text/css">
+      
+   /* body{
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu; 
+      }
+*/
+    @font-face {
+      font-family: "Sailec";
+      font-weight: 400;
+      src: url("themes/appton/fonts/Sailec.otf");
+    }
+     
+     body{
+        font-family: Sailec, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu; 
+   }
+
+    </style>
+
   </head>
   <body>
    <!-- navbar-->
@@ -81,7 +99,7 @@
               {{-- <a href="index.html" class="animsition-link"> --}}
                 
             {{-- <li aria-current="page" class="breadcrumb-item active"> --}}
-             <span id="thename">{{$username}} </span>
+             <span style="font-family: Sailec!important" id="thename">{{$username}} </span>
 
              <br><i class="icon-shield-settings"></i>
               </li>
@@ -120,8 +138,8 @@
           </div>
           
 
-<h3 class="mb-2">Anonymously send an encrypted message to <b>{{$username}}</b></h3>
-<p class="lead">Please kindly check the <a href="{{route('home.userreply', ['username' => $username])}}">Reply</a> to see future responses from <b>{{$username}}</b>.</p>
+<h4 style="font-family: Sailec!important">Anonymously send an encrypted message to <b>{{$username}}</b></h4>
+<p style="font-family: Sailec!important" class="lead">Please kindly check the <a href="{{route('home.userreply', ['username' => $username])}}">Reply</a> to see future responses from <b>{{$username}}</b>.</p>
         </header>
 
         <div class="row align-items-center mt-5">

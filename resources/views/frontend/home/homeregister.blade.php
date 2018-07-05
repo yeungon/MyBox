@@ -30,6 +30,24 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    <style type="text/css">
+
+    /*NationalBook is not free :-), willing to buy soon, using here for testing only*/
+    @font-face {
+      font-family: "NationalBook";
+      font-weight: 400;
+      src: url("https://cdn.auckland.ac.nz/aem/etc/designs/uoa-digital/clientlibs/css/base/fonts/NationalWeb-Book.woff");
+    }
+
+      
+     body{
+        font-family: Roboto,Helvetica Neue,Helvetica,Arial,sans-serif, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu; 
+      }
+
+
+    </style>
+
   </head>
   <body>
     <!-- navbar-->
@@ -211,7 +229,7 @@
                                     </div>
                                 @endif
 
-                                <form class="form-horizontal" method="POST" action="{{ route('password.password') }}">
+                                <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
                                     {{ csrf_field() }}
 
                                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
