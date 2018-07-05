@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GetBox - An encrypted box for secure life</title>
+    <title>MyBox - An encrypted box for secure life</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="{{asset('themes/appton/css/custom.css')}}">
     <!-- Favicon-->
     <link rel="shortcut icon" href="{{asset('themes/appton/img/favicon.png')}}">
-    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]df>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 
@@ -213,54 +213,41 @@
 
 
          <div class="row"> 
-          <div class="col-lg-8">   
-            <div id="accordion" class="faq accordion accordion-custom pb-5">
+          <div class="col-lg-7">
+
+            {{-- <div id="accordion" class="faq accordion accordion-custom pb-5"> --}}
                     
               <!-- question        -->
-              <div class="card">
+              {{-- <div class="card" style="background:white!important; "> --}}
               @if($guard==true)
                 @if(count($asks)>0)
                     @foreach($asks as $ask)
-                    <div id="headingTwo" class="card-header">
-                    <h4 class="mb-0 accordion-heading">
-                      <button aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed">
-                        <span class="iconmessage"><i style="font-size: 130%; padding-right: 5%; margin-left: 0px"  class="icon-light-bulb"></i></span>
-                        <span style="padding-left: 18px" id="timecreated"> @asked at {{$ask->created_at}}.</span>
-                      </button>
-                    </h4>
+                    
+                    <div class="cauhoitraloidiv">
+                        <span class="iconmessage"><i style="font-size: 120%; padding-right: 0%; margin-left: 0px"  class="icon-light-bulb"></i></span>
+                        <span style="padding-left: 0%" id="timecreated"> @asked at {{$ask->created_at}}.</span>
+                        <span style="font-size: 14px" class="decryptedmesssagereply">{{sodium_crypto_box_seal_open(decrypt($ask->ask), decrypt($privatekey))}}</span>
                     </div>
-                                        
-                    <span style="font-size: 14px" class="decryptedmesssage">{{sodium_crypto_box_seal_open(decrypt($ask->ask), decrypt($privatekey))}}</span>
+                   {{-- Reply --}}
+                   <div class="cauhoitraloidiv">
+                       <span class="replydecryptedmesssagereply">
+                       {{sodium_crypto_box_seal_open(decrypt($ask->reply['reply']), decrypt($privatekey))}}</span>
 
-                    {{-- Reply --}}
+                       <span id="timereply"> @replied by <b>{{$username}}</b> at {{$ask->created_at}}.</span>
 
-                          <span class="botreply">
-                           <div style="" id="headingTwo" class="card-header">
-                                <h4 class="mb-0 accordion-heading">
-                                  <button aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed">
-                                    {{-- <span class="iconmessage"><i style="color:#9055A2; font-weight: bold" class="icon-shield-settings"></i></span> --}}
-                                    <span style="padding-left: 15%" id="timecreated"> @replied by <b>{{$username}}</b> at {{$ask->created_at}}.</span>
-                                  </button>
-                                </h4>
-                           </div>
-                           </span>                          
-                          
-                           <span style="padding-left: 15%" class="replydecryptedmesssage">
-                            
-                            {{sodium_crypto_box_seal_open(decrypt($ask->reply['reply']), decrypt($privatekey))}}</span>
-
+                   </div>
                      {{-- end of reply --}}
                     @endforeach
                 @endif
             @else
-                  
-            <span class="decryptedmesssage" style="font-weight: bold; padding-left: 2%; padding-top: 3%">Your session is closed. Please reauthorize your access with the private key given.</span>
+              <span class="decryptedmesssage" style="font-weight: bold; padding-left: 2%; padding-top: 3%">Your session is closed. Please reauthorize your access with the private key given.</span>
             @endif
 
-              </div>
+              {{-- </div> class="card"--}}
                
 
-              </div>
+              {{-- </div> --}}
+
             </div>
           </div>
           <span class ='pagination' style="padding-left: 20%"><centre>{{ $asks->links() }}</centre></span>
@@ -274,7 +261,7 @@
 
     <footer class="main-footer">
       <div class="container">
-        <div class="row">
+        {{-- <div class="row">
           <div class="col-lg-3 mb-5 mb-lg-0">
             <div class="footer-logo"><img src="{{asset('themes/appton/img/logo-footer.svg')}}" alt="..." class="img-fluid"></div>
           </div>
@@ -305,21 +292,25 @@
               <li> <a href="#" class="footer-link">Partners</a></li>
             </ul>
           </div>
-        </div>
+        </div> --}}
       </div>
       <div class="copyrights">
         <div class="container">
           <div class="row">
             <div class="col-lg-6 text-center text-lg-left">
-              <p class="copyrights-text mb-3 mb-lg-0">&copy; All rights reserved. GetBox. Frontend by <a href="https://bootstrapious.com/landing-pages" class="external footer-link">Bootstrapious </a></p>
-              <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+              <p class="copyrights-text mb-3 mb-lg-0">&copy; All rights reserved. MyBox, since 2018. {{-- Frontend by <a href="https://bootstrapious.com/landing-pages" class="external footer-link">Bootstrapious </a> --}}</p>
+              <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)
+              Thanks for the theme, paid you already :-)
+              -->
               
             </div>
-            <div class="col-lg-6 text-center text-lg-right">
+
+            {{-- <div class="col-lg-6 text-center text-lg-right">
               <ul class="list-inline social mb-0">
                 <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook"></i></a><a href="#" class="social-link"><i class="fa fa-twitter"></i></a><a href="#" class="social-link"><i class="fa fa-youtube-play"></i></a><a href="#" class="social-link"><i class="fa fa-vimeo"></i></a><a href="#" class="social-link"><i class="fa fa-pinterest"></i></a></li>
               </ul>
             </div>
+             --}}
           </div>
         </div>
       </div>
@@ -338,11 +329,11 @@
     var now = sessionStorage.getItem("currenttimehomepagereadlocal");
 
     if(now == null){
-      time = 60;
-    }else if(now <= 60 && now >0){
+      time = 180;
+    }else if(now <= 180 && now >0){
       time = now;
     }else{
-      time = 60;
+      time = 180;
     }
     
     interval = setInterval(function() {

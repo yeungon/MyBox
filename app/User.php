@@ -31,12 +31,13 @@ class User extends Authenticatable
     https://thewebtier.com/laravel/modify-password-reset-email-text-laravel/
 
     https://tutorials.kode-blog.com/laravel-authentication-with-password-reset
+    https://laravel.com/docs/5.5/passwords
 
     */
-
+    /*Hàm này sẽ ghi đè hàm gửi email*/
     public function sendPasswordResetNotification($token)
     {
-    $this->notify(new App\Notifications\MailResetPasswordNotification($token));
+        $this->notify(new App\Notifications\MailResetPasswordNotification($token));
     }
 
 

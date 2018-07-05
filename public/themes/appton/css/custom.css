@@ -16,12 +16,6 @@
     font-size: 13px;
 }
 
-.decryptedmesssage {
-    background-color: #f1f3f0;
-    padding-left: 20px;
-    text-indent: 5%;
-    margin-bottom: 10%;
-}
 
 .iconmessage {
     
@@ -41,10 +35,59 @@ textarea {
   }
 
 
+
+.decryptedmesssage {
+    background-color: white;
+    /*border: 1px solid grey;*/
+    padding-left: 1%;
+    padding-right: 1%;
+    border-radius: 5%;
+}
+
 .replydecryptedmesssage {
-   background-color:#F1F3F1;
-   font-size: 13px;
-   padding-left: 2%;
+    background-color: white;
+    /*border: 1px solid grey;*/
+    padding: 1%;
+    padding-left: 2%!important;
+    padding-right: 1%;
+    font-size: 14px;
+    margin-left: 4%;
+                
+}
+
+
+.card-header {
+     margin-bottom: 0%;
+}
+
+
+
+.cauhoitraloidiv {
+    padding-bottom: 1%;
+}
+
+#timereply {
+    padding-left: 7%;
+    font-size: 11px;
+}
+
+#timecreated {
+    font-size: 11px;
+}
+
+
+.decryptedmesssagereply {
+    display: block;
+    padding: 2%;
+    padding-left: 2%;
+    font-size: 15px!important;
+}
+
+.replydecryptedmesssagereply {
+    display: block;
+    padding: 2%;
+    padding-left: 7%;
+    font-size: 15px!important;
 }
 
 

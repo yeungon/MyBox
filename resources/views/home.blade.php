@@ -89,7 +89,7 @@
                 <br>
                 <br>
                 {{-- Delete your account  --}}
-                2. <form class="form-horizontal" style="display: inline !important" method="get" action="{{ route('key.delete') }}">
+               {{--  2. <form class="form-horizontal" style="display: inline !important" method="get" action="{{ route('key.delete') }}">
                     {{csrf_field()}}
 
                     <button type="submit" class="btn btn-default btn-xs" style="padding-right: 8px;">
@@ -97,7 +97,7 @@
                     </button>
                 </form>
 
-                Delete your account. You need to provide your private key to delete your account.
+                Delete your account. You need to provide your private key to delete your account. --}}
                 {{-- end of the deleting a new masterkey section --}}
         </div>
 

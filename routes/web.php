@@ -128,66 +128,66 @@ Route::get('/users/create', 'UserController@create')->name('user.create');
 Route::post('/users', 'UserController@store')->name('user.store');*/
 
 
-Route::get('abc/mahoa', function(){
+// Route::get('abc/mahoa', function(){
 
 	
 	   
 
-          /* On Node B: */
-    $private  = sodium_crypto_box_keypair();
-    $public  = sodium_crypto_box_publickey($private);
-    // Then share $bobPublicKey with Node A
+//           /* On Node B: */
+//     $private  = sodium_crypto_box_keypair();
+//     $public  = sodium_crypto_box_publickey($private);
+//     // Then share $bobPublicKey with Node A
 
        
-        $key =  encrypt($public);
+//         $key =  encrypt($public);
 
-        echo "<br>";
-
-
-        $private = encrypt($private);
-
-      //   // echo "<br>";
-
-      //   // echo base64_encode($public);
-
-       
-      //   // // $key2 = encrypt($public_Key);
+//         echo "<br>";
 
 
-      //   // //echo decrypt($abc);
-       
-      //   // die();
+//         $private = encrypt($private);
+
+//       //   // echo "<br>";
+
+//       //   // echo base64_encode($public);
 
        
-      // //       die();
+//       //   // // $key2 = encrypt($public_Key);
 
-      // //       $decrypted2 = sodium_crypto_box_seal_open(decrypt($encrypted), decrypt($privatekeysession));
+
+//       //   // //echo decrypt($abc);
+       
+//       //   // die();
+
+       
+//       // //       die();
+
+//       // //       $decrypted2 = sodium_crypto_box_seal_open(decrypt($encrypted), decrypt($privatekeysession));
             
-      //   $key = 'eyJpdiI6InczMDIxc1U1MjFuTWJLYkRpMUttc1E9PSIsInZhbHVlIjoicjNXR3RDSXltMzdjalVXTEgyNDNIMlJ4bzVFQ0RwN2ZGQUhpUGR0YWI4TWI0SmtTZWJoUGRvaytoZHRST1lNWiIsIm1hYyI6ImQyZTBiMjQyNDA5OTlhN2ZlOGM3MGE1M2M2ZjdiMTAzODY2ZGYzM2U3MTA5Y2E3N2NiNWZkNDY3YmI5MDI1ZjcifQ==';
+//       //   $key = 'eyJpdiI6InczMDIxc1U1MjFuTWJLYkRpMUttc1E9PSIsInZhbHVlIjoicjNXR3RDSXltMzdjalVXTEgyNDNIMlJ4bzVFQ0RwN2ZGQUhpUGR0YWI4TWI0SmtTZWJoUGRvaytoZHRST1lNWiIsIm1hYyI6ImQyZTBiMjQyNDA5OTlhN2ZlOGM3MGE1M2M2ZjdiMTAzODY2ZGYzM2U3MTA5Y2E3N2NiNWZkNDY3YmI5MDI1ZjcifQ==';
 
-      //   $private = 'eyJpdiI6Ik5CSk90eUlNcnFSdUFGV2VySnhaWWc9PSIsInZhbHVlIjoielNzYzdXdkMzMW9NSjlVYzNCMmZHeDcwa1wvOEdlQldnenBUdUt6Ym55dGdpb3VreVFzQWdad2gyS2hIZmNPMVJBU3RYNSthM25LckNQVDE0V01GUGlZV2RKVnVrNXd1dk9rVUJxbk1PeW9vPSIsIm1hYyI6IjkzNjgzMWZhMTgwNjU1MTM2OGE2Y2IwYzRmNjk3ODZmMTcxYTJkZjk5Nzk5MDhmY2IwZWY1NWFlYTE2MTdkMDQifQ==';
+//       //   $private = 'eyJpdiI6Ik5CSk90eUlNcnFSdUFGV2VySnhaWWc9PSIsInZhbHVlIjoielNzYzdXdkMzMW9NSjlVYzNCMmZHeDcwa1wvOEdlQldnenBUdUt6Ym55dGdpb3VreVFzQWdad2gyS2hIZmNPMVJBU3RYNSthM25LckNQVDE0V01GUGlZV2RKVnVrNXd1dk9rVUJxbk1PeW9vPSIsIm1hYyI6IjkzNjgzMWZhMTgwNjU1MTM2OGE2Y2IwYzRmNjk3ODZmMTcxYTJkZjk5Nzk5MDhmY2IwZWY1NWFlYTE2MTdkMDQifQ==';
          
-      //   // $key = 'VlFN1/Y/X6Q/habhs9kNo7sjMiH30Un3abP7X2C1jig=';
+//       //   // $key = 'VlFN1/Y/X6Q/habhs9kNo7sjMiH30Un3abP7X2C1jig=';
 
-      //   // $private = '/2fqCiVEx0Q2K2HrYqoCy85tegdIXcyTs0IA9T//szxWUU3X9j9fpD+FpuGz2Q2juyMyIffRSfdps/tfYLWOKA==';
+//       //   // $private = '/2fqCiVEx0Q2K2HrYqoCy85tegdIXcyTs0IA9T//szxWUU3X9j9fpD+FpuGz2Q2juyMyIffRSfdps/tfYLWOKA==';
             
-        $message = "Thư mật nè Hi there,fda fdafds fafsfd  thử xem độ dài của thư, thử xem độ dài của thư, thử xem";
+//         $message = "Thư mật nè Hi there,fda fdafds fafsfd  thử xem độ dài của thư, thử xem độ dài của thư, thử xem";
             
-        $ciphertext = sodium_crypto_box_seal($message, decrypt($key));
+//         $ciphertext = sodium_crypto_box_seal($message, decrypt($key));
             
-            //echo  base64_decode($ciphertext);
+//             //echo  base64_decode($ciphertext);
 
-        /* On Node B, receiving an encrypted message from Node A */
+//         /* On Node B, receiving an encrypted message from Node A */
 
-        $data = encrypt($ciphertext);
+//         $data = encrypt($ciphertext);
 
         
 
-        echo $decrypted = sodium_crypto_box_seal_open(decrypt($data), decrypt($private));
+//         echo $decrypted = sodium_crypto_box_seal_open(decrypt($data), decrypt($private));
 
         
 
-});
+// });
 
 
 

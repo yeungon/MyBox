@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GetBox - An encrypted box for secure life</title>
+    <title>MyBox - An encrypted box for secure life</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -191,7 +191,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <div class="checkbox">
                                     <label>
@@ -199,7 +199,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                            </div> --}}
 
                        </form>
                    
@@ -272,7 +272,7 @@
 
     <footer class="main-footer">
       <div class="container">
-        <div class="row">
+        {{-- <div class="row">
           <div class="col-lg-3 mb-5 mb-lg-0">
             <div class="footer-logo"><img src="{{asset('themes/appton/img/logo-footer.svg')}}" alt="..." class="img-fluid"></div>
           </div>
@@ -303,21 +303,24 @@
               <li> <a href="#" class="footer-link">Partners</a></li>
             </ul>
           </div>
-        </div>
+        </div> --}}
       </div>
       <div class="copyrights">
         <div class="container">
           <div class="row">
             <div class="col-lg-6 text-center text-lg-left">
-              <p class="copyrights-text mb-3 mb-lg-0">&copy; All rights reserved. GetBox. Frontend by <a href="https://bootstrapious.com/landing-pages" class="external footer-link">Bootstrapious </a></p>
-              <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+              <p class="copyrights-text mb-3 mb-lg-0">&copy; All rights reserved. MyBox, since 2018. {{-- Frontend by <a href="https://bootstrapious.com/landing-pages" class="external footer-link">Bootstrapious </a> --}}</p>
+              <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)
+              Thanks for the theme, paid you already :-)
+              -->
               
             </div>
-            <div class="col-lg-6 text-center text-lg-right">
+            {{-- <div class="col-lg-6 text-center text-lg-right">
               <ul class="list-inline social mb-0">
                 <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook"></i></a><a href="#" class="social-link"><i class="fa fa-twitter"></i></a><a href="#" class="social-link"><i class="fa fa-youtube-play"></i></a><a href="#" class="social-link"><i class="fa fa-vimeo"></i></a><a href="#" class="social-link"><i class="fa fa-pinterest"></i></a></li>
               </ul>
             </div>
+             --}}
           </div>
         </div>
       </div>

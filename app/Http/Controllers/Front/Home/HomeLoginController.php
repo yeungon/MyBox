@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+// use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class HomeLoginController extends Controller
 {
@@ -20,9 +21,11 @@ class HomeLoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
+    /*The AuthenticatesUsers trait uses ThrottlesLogins in its definition so you already have ThrottlesLogins by having AuthenticatesUsers.*/
     use AuthenticatesUsers;
 
+    
+    
     /**
      * Where to redirect users after login.
      *
@@ -40,12 +43,29 @@ class HomeLoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /*
+    Tùy chọn số lần đăng nhập sai 5 lần và 10 phút
+    https://laracasts.com/discuss/channels/laravel/customize-laravel-login-throttling-54*/
+    /**
+     * Determine if the user has too many failed login attempts.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function hasTooManyLoginAttempts(Request $request)
+    {
+        return $this->limiter()->tooManyAttempts(
+            $this->throttleKey($request), 5, 10
+        );
+    }
+
+
     public function login(Request $request)
     {
 
          $valid = Validator::make($request->all(), [
             
-            'username' => 'required|string|min:4|max:255|',
+            'username' => 'required|string|min:4|max:100|',
             'password' => 'required|string|min:6|',
             
             // 'privatekey' => 'min:88|max:88',
@@ -54,7 +74,7 @@ class HomeLoginController extends Controller
             /*Customeize the error*/
             'password.required' => 'Your need to authorize your confidential',
             'password.min' => 'It seems that your password have at least 6 characters!',
-            'password.max' => 'Password should have less than 250 characters!',
+            'username.max' => 'Password should have less than 100 characters!',
         ]);
       
         
@@ -66,12 +86,12 @@ class HomeLoginController extends Controller
         }else{
                 
                 /*Xác thực bằng Auth:attempt*/
-
                 $credentials = $request->only('username', 'password');
 
+                
                 if (Auth::attempt($credentials)) {
 
-                    $username = $request['username'];
+                    $username = strtolower(trim($request['username']));
 
                     $direct = '/'.$username;
                     
