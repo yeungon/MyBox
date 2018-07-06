@@ -27,11 +27,23 @@ Route::get('/login', 'Front\Home\HomeRegisterController@index')->name('login');
 Route::get('/register', 'Front\Home\HomeRegisterController@index')->name('home.registerindex');
 
 
-// // Password Reset Routes...https://tutorials.kode-blog.com/laravel-authentication-with-password-reset
+/*
+Password Reset Routes...https://tutorials.kode-blog.com/laravel-authentication-with-password-reset
+1) ghi đè  sendPasswordResetNotification trong Model User
+https://laravel.com/docs/5.5/passwords
+2) Tạo thư với nội dung mới, dùng Notifications
+3) Truyền username và email trong email để validate
+
+*/
 // Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
 // Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-// Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset.token');
-// Route::post('password/reset', 'ResetPasswordController@reset');
+Route::get('password/reset/{token}/{email}', 'Front\Home\HomeResetPasswordController@showResetForm')->name('password.reset.token');
+Route::post('password/reset', 'Front\Home\HomeResetPasswordController@reset')->name('password.reset.submit');
+
+/*phòng tránh truy cập trực tiếp vào link nếu không có token*/
+Route::get('password/reset', 'Front\Home\HomeRegisterController@index')->name('register');
+
+
 
 
 /*User Frontend*/
