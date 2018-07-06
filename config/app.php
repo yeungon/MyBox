@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'HashBox'),
+    'name' => env('APP_NAME', 'MyBox - Secured Box'),
 
     /*
     |--------------------------------------------------------------------------
