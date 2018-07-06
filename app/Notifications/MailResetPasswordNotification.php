@@ -54,16 +54,22 @@ class MailResetPasswordNotification extends Notification
     public function toMail($notifiable)
     {
         
-        $link = url( "/password/reset/?token=" . $this->token );
+        // $link = url( "/password/reset/?token=" . $this->token );
 
         return (new MailMessage)
                     // ->line('The introduction to the notification.')
                     // ->action('Notification Action', url('/'))
                     // ->line('Thank you for using our application!');
 
+                    ->greeting("Kiora $this->username")
                     ->line('You are receiving this email because we received a password reset request for your account.')
-                    ->action('Reset Password', route('password.reset.token',['token' => $this->token]))
-                    ->line('If you did not request a password reset, no further action is required.');
+                    /*Truyền email và token để verify*/
+
+                    ->action('Reset Password', route('password.reset.token',['token' => $this->token, 'email' => $this->email]))
+                    ->line('Bear in mind that your token will expire in 60 minutes after the request has been made.')
+                    ->line('If you did not request a password reset, no further action is required.')
+                    ->from('myboxdotnz@gmail.com')
+                    ->subject( 'MyBox - Reset your password');
 
                   // ->view('reset.emailer')
                   // ->from('info@example.com')
