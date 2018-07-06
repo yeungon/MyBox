@@ -20,10 +20,18 @@ class MailResetPasswordNotification extends Notification
      */
 
     public $token;
+
+    public $email;
+
+    public $username;
     
-    public function __construct()
+    /*pass từ sendPasswordResetNotification trong Model User*/
+    public function __construct($token, $email, $username)
     {
         $this->token = $token;
+        $this->email = $email;
+        $this->username = $username;
+
     }
 
     /**
