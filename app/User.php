@@ -35,10 +35,13 @@ class User extends Authenticatable
 
     */
     /*Hàm này sẽ ghi đè hàm gửi email*/
-    // public function sendPasswordResetNotification($token)
-    // {
-    //     $this->notify(new Notifications\MailResetPasswordNotification($token));
-    // }
+    public function sendPasswordResetNotification($token)
+    {
+        /*Có thể pass $this->usename hoặc $this->email trong notify, tham khảo
+            https://stackoverflow.com/questions/40703804/laravel-5-3-how-to-show-username-in-notifications-email
+        */
+        $this->notify(new Notifications\MailResetPasswordNotification($token, $this->email, $this->username));
+    }
 
 
     /*ràng buộc mối quan hệ với một - nhiều với message*/
