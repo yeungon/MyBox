@@ -35,10 +35,10 @@ class User extends Authenticatable
 
     */
     /*Hàm này sẽ ghi đè hàm gửi email*/
-    public function sendPasswordResetNotification($token)
-    {
-        $this->notify(new App\Notifications\MailResetPasswordNotification($token));
-    }
+    // public function sendPasswordResetNotification($token)
+    // {
+    //     $this->notify(new Notifications\MailResetPasswordNotification($token));
+    // }
 
 
     /*ràng buộc mối quan hệ với một - nhiều với message*/

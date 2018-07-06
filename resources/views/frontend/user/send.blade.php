@@ -138,8 +138,8 @@
           </div>
           
 
-<h4 style="font-family: Sailec!important">Anonymously send an encrypted message to <b>{{$username}}</b></h4>
-<p style="font-family: Sailec!important" class="lead">Please kindly check the <a href="{{route('home.userreply', ['username' => $username])}}">Reply</a> to see future responses from <b>{{$username}}</b>.</p>
+<h4 style="font-family: Sailec!important">Anonymously send an encrypted message to <strong style="color: #9055A2">{{$username}}</strong></h4>
+<p style="font-family: Sailec!important" class="lead">Please kindly check the <a href="{{route('home.userreply', ['username' => $username])}}">Reply</a> to see future responses from <strong style="color: #9055A2">{{$username}}</strong>.</p>
         </header>
 
         <div class="row align-items-center mt-5">
@@ -149,7 +149,7 @@
                   <div class="form-group mb-4">
                     <label>Write your message here:<sup class="text-primary">&#10033;</sup></label>
                       <div class="form-group{{ $errors->has('ask') ? ' has-error' : '' }}">
-                            <textarea name="ask" placeholder="Send an encrypted message!" class="form-control"  required>{{ old('ask')}}</textarea>
+                            <textarea name="ask" placeholder="Send a less than 500 characters encrypted message!" class="form-control"  required>{{ old('ask')}}</textarea>
                           @if ($errors->has('ask'))
                               <span class="help-block">
                               <strong>{{ $errors->first('ask') }}</strong>

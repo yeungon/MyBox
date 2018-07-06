@@ -180,7 +180,7 @@ class UserController extends Controller
         @note truyền cookie từ request này sang request tiếp theo, gán giá trị 'guard' là 'vuong', hết hạn trong vòng 1 phút.
 
         */
-        return redirect()-> route('home.userreadmessage', ['id' => $username, 'token' => sha1(rand(1, 1000))])->with(["privatekey" => $data])->cookie('guard', 'vuong', 1);
+        return redirect()-> route('home.userreadmessage', ['id' => $username, 'token' => sha1(rand(1, 1000))])->with(["privatekey" => $data])->cookie('guard', 'vuong', 2);
        
     }
     
@@ -489,9 +489,8 @@ class UserController extends Controller
       
         /*Truyền dữ liệu sang route get để đọc, truyền dữ liệu session sang hàm readmessage
         @note truyền cookie từ request này sang request tiếp theo, gán giá trị 'guard' là 'vuong', hết hạn trong vòng 1 phút.
-
         */
-        return redirect()-> route('home.userreplyread', ['id' => $username, 'token' => sha1(rand(1, 1000))])->with(["privatekey" => $data])->cookie('guard', 'vuong', 1);
+        return redirect()-> route('home.userreplyread', ['id' => $username, 'token' => sha1(rand(1, 1000))])->with(["privatekey" => $data])->cookie('guard', 'vuong', 3);
 
     }
 

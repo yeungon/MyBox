@@ -18,6 +18,9 @@ class MailResetPasswordNotification extends Notification
      *
      * @return void
      */
+
+    public $token;
+    
     public function __construct()
     {
         $this->token = $token;

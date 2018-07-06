@@ -298,11 +298,11 @@
     var now = sessionStorage.getItem("currenttimehomepagelocal");
 
     if(now == null){
-      time = 60;
-    }else if(now <= 60 && now >0){
+      time = 120;
+    }else if(now <= 120 && now >0){
       time = now;
     }else{
-      time = 60;
+      time = 120;
     }
     
     interval = setInterval(function() {
