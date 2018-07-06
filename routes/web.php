@@ -135,6 +135,9 @@ Route::delete('/box/me/ask/deletereply/{id}', 'Admin\AskController@deletereply')
 Route::delete('/box/me/ask/deleteask/{id}', 'Admin\AskController@deleteask')->name('ask.deleteask')->middleware('auth');
 
 
+
+
+
 /*Route::get('/users', 'UserController@index')->name('user.index');
 Route::get('/users/create', 'UserController@create')->name('user.create');
 Route::post('/users', 'UserController@store')->name('user.store');*/
