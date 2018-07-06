@@ -211,6 +211,7 @@
                                 <br>
                                 <button type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-target="#readreply">Forgot Your Password?</button>
                                 <br>
+                                <br>
                                 @if (session('status'))
                                     <div class="alert alert-success">
                                         {{ session('status') }}
