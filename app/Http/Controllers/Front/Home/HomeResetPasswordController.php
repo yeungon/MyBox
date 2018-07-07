@@ -59,6 +59,7 @@ class HomeResetPasswordController extends Controller
 		    if (!Hash::check($token, $reset->token)) {
     			
     			echo "It appears that your token is incorrect";
+
 			}else{
 
 				/*Truyền username và email sang view => function reset để xử lý*/
