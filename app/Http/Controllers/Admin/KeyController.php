@@ -11,6 +11,8 @@ use App\Message;
 use App\Ask;
 use App\Reply;
 use Session;
+use Mail;
+use Carbon\Carbon; 
 
 
 class KeyController extends Controller
@@ -198,6 +200,7 @@ class KeyController extends Controller
         $user = \Auth::user();
 
         $id = $user->id;
+
         
         $data['publickey'] = $user->publickey;
 
@@ -253,6 +256,8 @@ class KeyController extends Controller
         $user = \Auth::user();
         $publickey = $user->publickey;
         $id = $user->id;
+        $username = $user->username;
+        $email = $user->email;
         
         $passworddata = $user->password;
 
@@ -327,9 +332,37 @@ class KeyController extends Controller
 
                         $keys->save();
                         
-                        /*Nếu đổi mật khẩu thì logout*/
+                        /*Nếu đổi mật khẩu thì YÊU CẦU LOGIN LẠI, ép LOGOUT BẰNG CÁC XÓA SESSION*/
                         if($newpassword == true){
-                             /*xóa session để bắt login lại*/
+                            
+
+                            /**
+                            *************************************SEND EMAIL ************************************************************
+                            */
+                            /*Thiết lập timezone cho PHP, cần thiết lập trên phpini*/       
+                            date_default_timezone_set('Europe/London');
+                            
+                            $currenttime = Carbon::now('Europe/London');
+
+                            $formattime =  $currenttime->toDayDateTimeString();
+
+                            /*test xem có thể gửi email
+                            Gửi string email, dùng closure để truyền vào email là biến use($email)
+                            https://laracasts.com/discuss/channels/laravel/send-raw-text-mail-without-using-a-view-in-laravel-53
+                            */
+                            $content = "Hi $username! Your password has been changed at $formattime (London timezone)! If you have not done that, please do not hestitate to contact us by replying this email! Cheer!";
+
+                            Mail::raw($content, function ($message) use($email, $username) {
+                               $message ->  to($email);
+                               $message ->  subject('Urgent! Your password has been changed!');
+                               $message ->  from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
+                            });
+
+                            /**
+                            *************************************END OF SEND EMAIL ************************************************************
+                            */
+                           
+                            /*xóa session để bắt login lại*/
                             Session::flush();
 
                             return redirect()->route('home.index')->with('message', "Opp!, it appears that you donot have any status or question at the moment! Create one first! Your new private key is therefore issued as the following:
@@ -343,6 +376,34 @@ class KeyController extends Controller
                             ");
 
                         }else{
+
+                            
+                            /**
+                            *************************************SEND EMAIL ************************************************************
+                            */
+                            /*Thiết lập timezone cho PHP, cần thiết lập trên phpini*/       
+                            date_default_timezone_set('Europe/London');
+                            
+                            $currenttime = Carbon::now('Europe/London');
+
+                            $formattime =  $currenttime->toDayDateTimeString();
+
+                            /*test xem có thể gửi email
+                            Gửi string email, dùng closure để truyền vào email là biến use($email)
+                            https://laracasts.com/discuss/channels/laravel/send-raw-text-mail-without-using-a-view-in-laravel-53
+                            */
+                            $content = "Hi $username! Your private key has been changed at $formattime (London timezone)! If you have not done that, please do not hestitate to contact us by replying this email! Cheer!";
+
+                            Mail::raw($content, function ($message) use($email, $username) {
+                               $message ->  to($email);
+                               $message ->  subject('Urgent! Your private key has been changed!');
+                               $message ->  from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
+                            });
+
+                            /**
+                            *************************************END OF SEND EMAIL ************************************************************
+                            */
+
 
                             return redirect()->back()->with('tinnhan', "Opp!, it appears that you donot have any status or question at the moment! Create one first! 
                             <br>
@@ -536,6 +597,33 @@ class KeyController extends Controller
                                             
                                             /*Nếu có new password thì DELETE SESSION AND ASK RE-LOGIN*/
                                             if($newpassword == true){
+
+                                                                      /**
+                                                *************************************SEND EMAIL ************************************************************
+                                                */
+                                                /*Thiết lập timezone cho PHP, cần thiết lập trên phpini*/       
+                                                date_default_timezone_set('Europe/London');
+                                                
+                                                $currenttime = Carbon::now('Europe/London');
+
+                                                $formattime =  $currenttime->toDayDateTimeString();
+
+                                                /*test xem có thể gửi email
+                                                Gửi string email, dùng closure để truyền vào email là biến use($email)
+                                                https://laracasts.com/discuss/channels/laravel/send-raw-text-mail-without-using-a-view-in-laravel-53
+                                                */
+                                                $content = "Hi $username! Both of your privat key and password have been changed at $formattime (London timezone)! If you have not done that, please do not hestitate to contact us by replying this email! Cheer!";
+
+                                                Mail::raw($content, function ($message) use($email, $username) {
+                                                   $message ->  to($email);
+                                                   $message ->  subject('Urgent! Your password and your private key have been changed!');
+                                                   $message ->  from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
+                                                });
+
+                                                /**
+                                                *************************************END OF SEND EMAIL ************************************************************
+                                                */
+
                                                  /*xóa session để bắt login lại*/
                                                 Session::flush();
 
@@ -551,6 +639,33 @@ class KeyController extends Controller
 
                                             }else{
 
+                                                                /**
+                                                    *************************************SEND EMAIL ************************************************************
+                                                    */
+                                                    /*Thiết lập timezone cho PHP, cần thiết lập trên phpini*/       
+                                                    date_default_timezone_set('Europe/London');
+                                                    
+                                                    $currenttime = Carbon::now('Europe/London');
+
+                                                    $formattime =  $currenttime->toDayDateTimeString();
+
+                                                    /*test xem có thể gửi email
+                                                    Gửi string email, dùng closure để truyền vào email là biến use($email)
+                                                    https://laracasts.com/discuss/channels/laravel/send-raw-text-mail-without-using-a-view-in-laravel-53
+                                                    */
+                                                    $content = "Hi $username! Your private key has been changed at $formattime (London timezone)! If you have not done that, please do not hestitate to contact us by replying this email! Cheer!";
+
+                                                    Mail::raw($content, function ($message) use($email, $username) {
+                                                       $message ->  to($email);
+                                                       $message ->  subject('Urgent! Your private key has been changed!');
+                                                       $message ->  from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
+                                                    });
+
+                                                    /**
+                                                    *************************************END OF SEND EMAIL ************************************************************
+                                                    */
+
+                                                    
                                                     return redirect()->back()->with('message', "Your profile has been updated and your new privatekey is issued as below:
                                                     <br>
                                                     <pre>$newprivate</pre>
@@ -676,6 +791,36 @@ class KeyController extends Controller
                                             
                                             /*Nếu có new password thì DELETE SESSION AND ASK RE-LOGIN*/
                                             if($newpassword == true){
+
+
+                                                                      /**
+                                                *************************************SEND EMAIL ************************************************************
+                                                */
+                                                /*Thiết lập timezone cho PHP, cần thiết lập trên phpini*/       
+                                                date_default_timezone_set('Europe/London');
+                                                
+                                                $currenttime = Carbon::now('Europe/London');
+
+                                                $formattime =  $currenttime->toDayDateTimeString();
+
+                                                /*test xem có thể gửi email
+                                                Gửi string email, dùng closure để truyền vào email là biến use($email)
+                                                https://laracasts.com/discuss/channels/laravel/send-raw-text-mail-without-using-a-view-in-laravel-53
+                                                */
+                                                $content = "Hi $username! Both of your privat key and password have been changed at $formattime (London timezone)! If you have not done that, please do not hestitate to contact us by replying this email! Cheer!";
+
+                                                Mail::raw($content, function ($message) use($email, $username) {
+                                                   $message ->  to($email);
+                                                   $message ->  subject('Urgent! Your password and your private key have been changed!');
+                                                   $message ->  from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
+                                                });
+
+                                                /**
+                                                *************************************END OF SEND EMAIL ************************************************************
+                                                */
+
+
+
                                                  /*xóa session để bắt login lại*/
                                                 Session::flush();
 
@@ -690,6 +835,31 @@ class KeyController extends Controller
                                                 ");
 
                                             }else{
+                                                                /**
+                                                    *************************************SEND EMAIL ************************************************************
+                                                    */
+                                                    /*Thiết lập timezone cho PHP, cần thiết lập trên phpini*/       
+                                                    date_default_timezone_set('Europe/London');
+                                                    
+                                                    $currenttime = Carbon::now('Europe/London');
+
+                                                    $formattime =  $currenttime->toDayDateTimeString();
+
+                                                    /*test xem có thể gửi email
+                                                    Gửi string email, dùng closure để truyền vào email là biến use($email)
+                                                    https://laracasts.com/discuss/channels/laravel/send-raw-text-mail-without-using-a-view-in-laravel-53
+                                                    */
+                                                    $content = "Hi $username! Both of your privat key and password have been changed at $formattime (London timezone)! If you have not done that, please do not hestitate to contact us by replying this email! Cheer!";
+
+                                                    Mail::raw($content, function ($message) use($email, $username) {
+                                                       $message ->  to($email);
+                                                       $message ->  subject('Urgent! Your password and your private key have been changed!');
+                                                       $message ->  from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
+                                                    });
+
+                                                    /**
+                                                    *************************************END OF SEND EMAIL ************************************************************
+                                                    */
 
                                                     return redirect()->back()->with('message', "Your profile has been updated and your new privatekey is issued as below:
                                                     <br>
@@ -759,6 +929,33 @@ class KeyController extends Controller
                     $users->publickey = $public;
                     $users->password  = bcrypt($newpassword);            
                     $users->save();
+
+
+                                          /**
+                    *************************************SEND EMAIL ************************************************************
+                    */
+                    /*Thiết lập timezone cho PHP, cần thiết lập trên phpini*/       
+                    date_default_timezone_set('Europe/London');
+                    
+                    $currenttime = Carbon::now('Europe/London');
+
+                    $formattime =  $currenttime->toDayDateTimeString();
+
+                    /*test xem có thể gửi email
+                    Gửi string email, dùng closure để truyền vào email là biến use($email)
+                    https://laracasts.com/discuss/channels/laravel/send-raw-text-mail-without-using-a-view-in-laravel-53
+                    */
+                    $content = "Hi $username! Your data have been deleted as you have not provided your current privateky when changing your password at $formattime (London timezone)! If you have not done that, please do not hestitate to contact us by replying this email! Cheer!";
+
+                    Mail::raw($content, function ($message) use($email, $username) {
+                       $message ->  to($email);
+                       $message ->  subject('Urgent! Your data are deleted and your private key, password have been changed!');
+                       $message ->  from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
+                    });
+
+                    /**
+                    *************************************END OF SEND EMAIL ************************************************************
+                    */
                     
                     /*xóa session để bắt login lại*/
                     Session::flush();
@@ -803,6 +1000,32 @@ class KeyController extends Controller
                     $users = User::find($id);
                     $users->publickey = $public;
                     $users->save();
+
+                      /**
+                    *************************************SEND EMAIL ************************************************************
+                    */
+                    /*Thiết lập timezone cho PHP, cần thiết lập trên phpini*/       
+                    date_default_timezone_set('Europe/London');
+                    
+                    $currenttime = Carbon::now('Europe/London');
+
+                    $formattime =  $currenttime->toDayDateTimeString();
+
+                    /*test xem có thể gửi email
+                    Gửi string email, dùng closure để truyền vào email là biến use($email)
+                    https://laracasts.com/discuss/channels/laravel/send-raw-text-mail-without-using-a-view-in-laravel-53
+                    */
+                    $content = "Hi $username! Your data have been deleted as you have not provided your current privateky when editing your profile at $formattime (London timezone)! If you have not done that, please do not hestitate to contact us by replying this email! Cheer!";
+
+                    Mail::raw($content, function ($message) use($email, $username) {
+                       $message ->  to($email);
+                       $message ->  subject('Urgent! Your data are deleted and your private key has been changed!');
+                       $message ->  from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
+                    });
+
+                    /**
+                    *************************************END OF SEND EMAIL ************************************************************
+                    */
                     
                     return redirect()->back()->with('tinnhan', "Your current messages are deleted and your new privatekey is issued as below:
                         <br>
@@ -816,6 +1039,22 @@ class KeyController extends Controller
          
          }
      
+    }
+
+    public function sendEmail($option){
+
+        if($option == "noprivatekeynonewpassword"){
+
+
+        }elseif ($option == "noprivatekeyandpassword") {
+            
+        }else if ($option == "yesprivatekey") {
+            # code...
+        }else{
+
+
+        }
+
     }
 
     public function deleteaccountform()
