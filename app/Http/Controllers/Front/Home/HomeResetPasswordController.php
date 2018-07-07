@@ -104,28 +104,31 @@ class HomeResetPasswordController extends Controller
          	$username = $request->usernametoupdate;
          	$password = $request->password;
          	$email = $request->email;
-			
-			
 
-			/*test xem có thể gửi email
+         	/*https://scotch.io/tutorials/easier-datetime-in-laravel-and-php-with-carbon
+			https://carbon.nesbot.com/docs/
+         	*/
+
+    		/*Thiết lập timezone cho PHP, cần thiết lập trên phpini*/     	
+	       	date_default_timezone_set('Europe/London');
+         	
+         	$currenttime = Carbon::now('Europe/London');
+
+         	$formattime =  $currenttime->toDayDateTimeString();
+
+         	/*test xem có thể gửi email
 			Gửi string email, dùng closure để truyền vào email là biến use($email)
 			https://laracasts.com/discuss/channels/laravel/send-raw-text-mail-without-using-a-view-in-laravel-53
 			*/
+			$content = "Hi $username! Your password has been changed at $formattime (London timezone)! If you have not done that, please do not hestitate to contact us by replying this email! Cheer!";
 
-			$content = "Hi $username! Your password has been changed! Cheer!";
-			
 			Mail::raw($content, function ($message) use($email, $username) {
-			   $message ->to($email);
-			   $message -> subject('Urgent! Your password has been changed!');
-			   $message -> from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
+			   $message ->	to($email);
+			   $message ->  subject('Urgent! Your password has been changed!');
+			   $message ->  from('myboxdotnz@gmail.com', 'Mybox.nz - Secured Box');
 			});
 
-
-			echo "đã chạy";
-
-			die(); //dừng tại đây để chỉnh tiếp
-
-
+			
 			/*cập nhật password mới và xóa token trong reset*/         	
 			/*Update new password, dùng Eloquent*/
 			User::where('username', $username)->update(['password' => bcrypt($password)]);
