@@ -42,12 +42,13 @@ class HomeResetPasswordController extends Controller
 
 		    /*Kiểm tra xem token hết hạn chưa*/
 
-		    /*Thời gian 1 tiếng trước*/
+		    /*Thời gian 1 tiếng trước, dùng thư viện Carbon có sẵn trên Laravel*/
 		    $onehour = Carbon::now()->subHours(1);
 			
 
 		    if($reset->created_at < $onehour){
 		    	echo "Yoop! It appears that your token is expired already!";
+		    	die();
 		    }
 
 		    /*Lấy token và hashed để đối chiếu với database, gợi ý
