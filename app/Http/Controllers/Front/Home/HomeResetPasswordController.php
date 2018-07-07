@@ -136,13 +136,6 @@ class HomeResetPasswordController extends Controller
 			DB::table('password_resets')->where('email', $email)->update(['token' => "", 'created_at' => null]);
 
 			
-			// /*Gửi mail thông báo - Send a notification*/
-			// $a = new Mailable;
-   //  		Mail::to($email)->send("Your password has been changed!");
-
-
-    
-			
 			return redirect()->route("home.index")->with('message', "Your password has been successfully changed! ");
 
 
