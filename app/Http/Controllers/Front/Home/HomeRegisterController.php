@@ -93,6 +93,53 @@ class HomeRegisterController extends Controller
                 $public = encrypt($PublicKey);
                 $private = encrypt($Keypair);
 
+                 /*Gửi mail cho người đăng ký
+                 http://www.learnlaravelwithmohit.com/sending-email-messages-in-laravel-5-5-contact-enquiry-form-example/
+                 */
+                /*Truyền data qua view chứ template của mail*/
+                $data = array(
+                'name' => $username,
+                'key' => $private,
+                'email' => $email,
+                );
+                
+                /*Tạo file chứa private key*/
+                 /*Tạo file zip nén chứa private key bảo vệ bằng chính password
+                http://php.net/manual/en/ziparchive.setencryptionname.php
+                */
+
+                // $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+                // fwrite($myfile, $private);
+                
+                // $zip = new \ZipArchive();
+                // if ($zip->open('key.zip', ZipArchive::CREATE) === TRUE) {
+                //     $zip->setPassword('secret');
+                //     $zip->addFile($myfile);
+                //     $zip->setEncryptionName('key.txt', ZipArchive::EM_AES_256);
+                //     $zip->close();
+                //     echo "Ok\n";
+                // } else {
+                //     echo "KO\n";
+                // }
+
+                // fclose($myfile);
+
+                // die;
+
+
+
+                $address = 'vuonghe@gmail.com';
+                Mail::send('mail.welcomemail', $data, function ($message) use ($username, $address){
+                        $message->from('postmaster@mail.mybox.nz', 'MyBox');
+                    
+                        $message->to($address)->subject("Hi $username, your account at mybox.nz has been created!");
+                        });
+                
+                /*end of gửi mail*/
+
+                echo "okey";
+                die(); //test
+
                  User::create([
                 'username' => $username,
                 'email' => $email,
