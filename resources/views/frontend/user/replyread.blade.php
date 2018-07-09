@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>MyBox - An encrypted box for secure life</title>
+    <title>{{ucfirst($username)?? "unknown"}}'s encrypted box</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -112,9 +112,9 @@
         
           @if($username =='theuserisnotregistered')
           @else
-            <a style="display: inline!important; font-size: 24px" href="{{route('home.user', ['username' => $username])}}" class="nav-link">Update</a>
-            <a style="display: inline !important; font-size: 24px" href="{{route('home.userreply', ['username' => $username])}}" class="nav-link">Reply</a>
-            <a style="display: inline !important; font-size: 24px" href="{{route('home.usersend', ['username' => $username])}}" class="nav-link">Send</a>
+             <a style="display: inline!important; font-size: 24px" href="{{route('home.user', ['username' => $username])}}" class="nav-link">Status</a>
+          <a style="display: inline !important; font-size: 24px" href="{{route('home.userreply', ['username' => $username])}}" class="nav-link">Conversations</a>
+          <a style="display: inline !important; font-size: 24px" href="{{route('home.usersend', ['username' => $username])}}" class="nav-link">Message</a>
           @endif
         
         <div class="row">
@@ -147,7 +147,7 @@
       <div class="container">
 
       
-        <h4 style="display: inline!important">Reply</h4>
+        <h4 style="display: inline!important">Conversations</h4>
 
 
          {{-- Phần giải mã --}}
@@ -156,7 +156,7 @@
         </span> --}}
 
         @if($privatekey==true)
-            <span style="padding-left: 30%;">
+            <span style="padding-left: 15%;">
               <form style="display: inline!important;" action="{{route('home.userreply', ['id'=> $username])}}" method="GET">
               <button onclick="closethebutton()" style="display: inline!important; border-radius: 5%;" id='thebutton' class='btn-warning btn-sm' class="d-flex align-items-center collapsed"><span>Closing </span><strong><span style="color: green; padding-left: 0px" id='timelefttoread'></span></strong>
               </button>
@@ -165,7 +165,7 @@
             <br>
             <br>
           @else
-            <span style="padding-left: 37%;">
+            <span style="padding-left: 15%;">
             <button style="display: inline!important; " class='btn-success btn-sm' data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed"><span> Read</span></button>
             </span>
 
@@ -224,14 +224,16 @@
                     @foreach($asks as $ask)
                     
                     <div class="cauhoitraloidiv">
-                        <span class="iconmessage"><i style="font-size: 120%; padding-right: 0%; margin-left: 0px"  class="icon-light-bulb"></i></span>
-                        <span style="padding-left: 0%" id="timecreated"> @asked at {{$ask->created_at}}.</span>
-                        <span style="font-size: 14px" class="decryptedmesssagereply">{{sodium_crypto_box_seal_open(decrypt($ask->ask), decrypt($privatekey))}}</span>
+                        {{-- <span class="iconmessage"><i style="font-size: 120%; padding-right: 0%; margin-left: 0px"  class="icon-light-bulb"></i></span> --}}
+                        <img style="width: 4%; margin-left: 0px" src="http://localhost/www/project/hopthu/laravel/public/themes/appton/img/chat2.svg">
+                        <span style="font-size: 14px; padding-left: 0%; padding-top: 5%; display: inline!important" class="decryptedmesssagereply">{{sodium_crypto_box_seal_open(decrypt($ask->ask), decrypt($privatekey))}}</span>
+                        <span style="padding-left: 7%; display: block;" id="timecreated"> @asked at {{$ask->created_at}}.</span>
+                        
                     </div>
                    {{-- Reply --}}
                    <div class="cauhoitraloidiv">
                        <span class="replydecryptedmesssagereply">
-                       {{sodium_crypto_box_seal_open(decrypt($ask->reply['reply']), decrypt($privatekey))}}</span>
+                       {!!nl2br(sodium_crypto_box_seal_open(decrypt($ask->reply['reply']), decrypt($privatekey)))!!}</span>
 
                        <span id="timereply"> @replied by <b>{{$username}}</b> at {{$ask->created_at}}.</span>
 

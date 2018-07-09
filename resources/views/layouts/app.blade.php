@@ -25,6 +25,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 
+    {{-- Bộ gõ --}}
+    <script src="{{ asset('js/tying/tinymce.min.js') }}"></script>
+    <script src="{{ asset('js/tying/jquery.tinymce.min.js') }}"></script>
+
+    
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/classic/ckeditor.js"></script>
+
     <style type="text/css">
         
     @font-face {
@@ -106,6 +114,20 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <script>
+            ClassicEditor
+                .create( document.querySelector( '#editor' ) )
+                .then( editor => {
+                    console.log( editor );
+                } )
+                .catch( error => {
+                    console.error( error );
+                } );
+    </script>
+
+    
+
 
 
 </body>

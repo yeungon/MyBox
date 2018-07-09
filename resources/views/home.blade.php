@@ -157,7 +157,9 @@
                                     
                                     {{-- <input id="privatekey" type="password" class="form-control" name="privatekey" required> --}}
 
-                                    <span style="margin-left: 0%"><textarea style="margin-left: 25%" class="form-control" name="message" required></textarea></span>
+                                    <span style="margin-left: 20%"><textarea style="margin-left: 25%" class="form-control" name="message" {{-- id="editor" --}} {{-- required --}} placeholder="You can write some basic HTML code."></textarea></span>
+
+                                                                        
                                     
                                     @if ($errors->has('message'))
                                         <span class="help-block">

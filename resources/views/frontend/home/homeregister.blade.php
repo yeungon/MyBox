@@ -31,6 +31,17 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 
+
+    <link href="https://fonts.googleapis.com/css?family=Audiowide|IM+Fell+English+SC" rel="stylesheet"> 
+
+    
+<link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet">
+
+
+
+
+
+
     <style type="text/css">
 
     /*NationalBook is not free :-), willing to buy soon, using here for testing only*/
@@ -46,6 +57,9 @@
       }
 
 
+    
+
+
     </style>
 
   </head>
@@ -53,7 +67,7 @@
     <!-- navbar-->
     <header class="header">
       <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container"><a href="./" class="navbar-brand"><img src="{{asset('themes/appton/img/logo.svg')}}" alt="" class="img-fluid"></a>
+        <div class="container"><a href="./" class="navbar-brand"><img style="width: 25%; margin-left: 30%" src="{{asset('themes/appton/img/mailbox.svg')}}" alt="" class="img-fluid"><span style="font-family: 'Cinzel', serif; font-size: 105%; display: block;">mybox.nz</span></a>
           <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right">Menu<i class="fa fa-bars ml-2"></i></button>
           <div id="navbarSupportedContent" class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">

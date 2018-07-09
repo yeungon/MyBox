@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>MyBox - An encrypted box for secure life</title>
+    <title>{{ucfirst($username)?? "unknown"}}'s encrypted box</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -115,7 +115,9 @@
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
               <span id="thename">{{$username}} </span>
-
+              
+              {{-- <a href="https://mybox.nz/{{$username}}"><span id="thename">{{$username}} </span></a> --}}
+              
               <br><i class="icon-shield-settings"></i>
               </li>
           </ol>
@@ -123,9 +125,9 @@
         
         @if($username =='theuserisnotregistered')
         @else
-          <a style="display: inline!important; font-size: 24px" href="{{route('home.user', ['username' => $username])}}" class="nav-link">Update</a>
-          <a style="display: inline !important; font-size: 24px" href="{{route('home.userreply', ['username' => $username])}}" class="nav-link">Reply</a>
-          <a style="display: inline !important; font-size: 24px" href="{{route('home.usersend', ['username' => $username])}}" class="nav-link">Send</a>
+          <a style="display: inline!important; font-size: 24px" href="{{route('home.user', ['username' => $username])}}" class="nav-link">Status</a>
+          <a style="display: inline !important; font-size: 24px" href="{{route('home.userreply', ['username' => $username])}}" class="nav-link">Conversations</a>
+          <a style="display: inline !important; font-size: 24px" href="{{route('home.usersend', ['username' => $username])}}" class="nav-link">Message</a>
         @endif
       </div>
     </section>
@@ -149,7 +151,7 @@
       <div class="container">
 
         
-        <h4 style="display: inline!important">Update</h4>
+        <h4 style="display: inline!important">Status</h4>
 
         {{-- Phần giải mã --}}
         <span style="padding-left: 40%; display: inline!important; padding-bottom: 5%">
@@ -214,9 +216,10 @@
                       <span style="padding-left: 1%;" id="timecreated"> Posted by <b>{{$username}}</b> at {{$message->created_at}}.</span>
                       
                       </div>
-                                        
-                      <textarea rows="4" cols="75%">{{$message->encrypted}}</textarea>
-
+                      
+                      <div div = "form-group">
+                      <textarea rows="4" class = "form-control" style="width:100%">{{$message->encrypted}}</textarea>
+                      </div>
                       {{-- nút like/dislike --}}
                       {{--     <br>
                           <button class ="likebutton"  id="likebutton" style="pointer-events: auto; display: inline-block;!important" onclick="likeclick()" ><i class="far fa-thumbs-up"></i></button> <span id="datalike">0</span>
@@ -229,6 +232,8 @@
                     @endforeach
                 @endif
               {{-- </div> --}} {{-- div class "card" --}}
+
+              
              </div>
           </div>
       </div>

@@ -53,14 +53,14 @@ Route::post('/{id}/', 'Front\User\UserController@read')->where('id', '[A-Za-z0-9
 
 Route::get('/{id}/{token}.html', 'Front\User\UserController@readmessage')->where(['id' => '[a-z0-9]+', 'token' =>'[A-Za-z0-9_]{40}+'])->name('home.userreadmessage');
 
-Route::get('/{id}/send', 'Front\User\UserController@send')->where('id', '[A-Za-z0-9_]{1,}+')->name('home.usersend');
+Route::get('/{id}/message', 'Front\User\UserController@send')->where('id', '[A-Za-z0-9_]{1,}+')->name('home.usersend');
 
-Route::post('/{id}/send', 'Front\User\UserController@sendstore')->where('id', '[a-z0-9_]{4,}+')->name('home.usersendstore');
+Route::post('/{id}/message', 'Front\User\UserController@sendstore')->where('id', '[a-z0-9_]{4,}+')->name('home.usersendstore');
 
 
-Route::get('/{id}/reply', 'Front\User\UserController@replyshow')->where('id', '[A-Za-z0-9_]{1,}+')->name('home.userreply');
-Route::post('/{id}/reply', 'Front\User\UserController@replyverify')->where('id', '[A-Za-z0-9]+')->name('home.userreplyverify');
-Route::get('/{id}/reply/{token}.html', 'Front\User\UserController@replyread')->where(['id' => '[a-z0-9]+', 'token' =>'[A-Za-z0-9_]{40}+'])->name('home.userreplyread');
+Route::get('/{id}/conversations', 'Front\User\UserController@replyshow')->where('id', '[A-Za-z0-9_]{1,}+')->name('home.userreply');
+Route::post('/{id}/conversations', 'Front\User\UserController@replyverify')->where('id', '[A-Za-z0-9]+')->name('home.userreplyverify');
+Route::get('/{id}/conversations/{token}.html', 'Front\User\UserController@replyread')->where(['id' => '[a-z0-9]+', 'token' =>'[A-Za-z0-9_]{40}+'])->name('home.userreplyread');
 
 /*End of the user u/{id}*/
 

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>MyBox - An encrypted box for secure life</title>
+    <title>{{ucfirst($username)?? "unknown"}}'s encrypted box</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -88,9 +88,9 @@
         
           @if($username =='theuserisnotregistered')
           @else
-            <a style="display: inline!important; font-size: 24px" href="{{route('home.user', ['username' => $username])}}" class="nav-link">Update</a>
-            <a style="display: inline !important; font-size: 24px" href="{{route('home.userreply', ['username' => $username])}}" class="nav-link">Reply</a>
-            <a style="display: inline !important; font-size: 24px" href="{{route('home.usersend', ['username' => $username])}}" class="nav-link">Send</a>
+             <a style="display: inline!important; font-size: 24px" href="{{route('home.user', ['username' => $username])}}" class="nav-link">Status</a>
+          <a style="display: inline !important; font-size: 24px" href="{{route('home.userreply', ['username' => $username])}}" class="nav-link">Conversations</a>
+          <a style="display: inline !important; font-size: 24px" href="{{route('home.usersend', ['username' => $username])}}" class="nav-link">Message</a>
           @endif
         
         <div class="row">
@@ -114,7 +114,6 @@
 
     {{-- Lỗi bằng flash session --}}
    
-
      @if($username =='theuserisnotregistered')
      @else
     <!-- FAQ Section-->
@@ -122,10 +121,10 @@
       <div class="container">
 
       
-        <h4 style="display: inline!important">Reply</h4>
+        <h4 style="display: inline!important">Conversations</h4>
 
          {{-- Phần giải mã --}}
-        <span style="padding-left: 47%;">
+        <span style="padding-left: 17%;">
             <button style="display: inline!important; " class='btn btn-primary btn-sm btn-xs' data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed"><span> Read</span></button>
         </span>
         <br>
@@ -177,7 +176,12 @@
                             <div id="headingTwo" class="card-header">
                                 <h4 class="mb-0 accordion-heading">
                                   <button aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed">
-                                    <span class="iconmessage"><i style="font-size: 130%; padding-right: 5%; margin-left: 0px"  class="icon-light-bulb"></i></span>
+                                    
+                                      {{-- <i style="font-size: 130%; padding-right: 5%; margin-left: 0px"  class="icon-light-bulb"></i></span> --}}
+                                    
+                                    <img style="width: 4%; margin-left: 0px" src="http://localhost/www/project/hopthu/laravel/public/themes/appton/img/chat2.svg">
+
+
                                     <span style="padding-left: 20px;" id="timecreated">Asked at {{$ask->created_at}}.</span>
                                   </button>
                                 </h4>
