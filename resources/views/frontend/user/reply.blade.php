@@ -167,18 +167,36 @@
 
          <div class="row"> 
           <div class="col-lg-8">   
-            <div id="accordion" class="faq accordion accordion-custom pb-5">
+            {{-- <div id="accordion" class="faq accordion accordion-custom pb-5"> --}}
                     
               <!-- question        -->
               <div class="card" style="background-color: none">
                 @if(count($asks)>0)
                     @foreach($asks as $ask)
+
+                    <div class="cauhoitraloidiv">
+                        <img style="width:3%; margin-left: 1%;" src="/themes/appton/img/chat2.svg">
+                        
+                        <div style="margin-left: 2%">
+                        <span style="font-size: 14px; padding-left: 1%; padding-top: 5%; display: inline!important" class="decryptedmesssagereply">{{$ask->ask}}</span></div>
+                        <br>
+                        <span style="padding-left: 7%; display: block;" id="timecreated"> @asked at {{$ask->created_at}}.</span>
+                        
+                    </div>
+                   {{-- Reply --}}
+                   <div class="cauhoitraloidiv">
+                       <span class="replydecryptedmesssagereply">
+                       {{($ask->reply['reply'])}}</span>
+
+                       <span id="timereply"> @replied by <b>{{$username}}</b> at {{$ask->created_at}}.</span>
+
+                   </div>
+{{-- 
                             <div id="headingTwo" class="card-header">
                                 <h4 class="mb-0 accordion-heading">
                                   <button aria-expanded="false" aria-controls="collapseTwo" class="d-flex align-items-center collapsed">
                                     
-                                      {{-- <i style="font-size: 130%; padding-right: 5%; margin-left: 0px"  class="icon-light-bulb"></i></span> --}}
-                                    
+                                                                         
                                     <img style="width: 4%; margin-left: 0px" src="http://localhost/www/project/hopthu/laravel/public/themes/appton/img/chat2.svg">
 
 
