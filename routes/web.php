@@ -134,7 +134,14 @@ Route::delete('/box/me/ask/deletereply/{id}', 'Admin\AskController@deletereply')
 
 Route::delete('/box/me/ask/deleteask/{id}', 'Admin\AskController@deleteask')->name('ask.deleteask')->middleware('auth');
 
+Route::get('test/key', function() {
+    echo env("APP_KEY");
+    echo getenv('APP_KEY');
+    echo "<pre>";
+    print_r($_ENV);
 
+    echo $_ENV['APP_KEY'];
+});
 
 			
 
