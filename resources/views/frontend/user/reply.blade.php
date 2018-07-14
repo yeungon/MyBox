@@ -206,7 +206,7 @@
                               </div>
                            <textarea rows="4">{{$ask->ask}}</textarea>
 
-                          {{-- Reply --}}
+                          
                           
                            <div style="padding-left: 1%" id="headingTwo" class="card-header replyask">
                                 <h4 class="mb-0 accordion-heading">
