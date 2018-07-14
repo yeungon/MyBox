@@ -217,12 +217,12 @@
                                 </h4>
                            </div>
                           
-                           <textarea rows="4">{{$ask->reply['reply']}}</textarea>                     
+                           <textarea rows="4">{{$ask->reply['reply']}}</textarea>                      --}}
 
                     @endforeach
                 @endif
                </div>
-              </div>
+              {{-- </div> --}}
             </div>
           </div>
           <span class ='pagination' style="padding-left: 20%"><centre>{{ $asks->links() }}</centre></span>
