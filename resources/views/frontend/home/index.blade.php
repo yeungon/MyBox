@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>MyBox - An encrypted box for secure life</title>
+    <title>F5 - An encrypted box for secure life</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -244,13 +244,7 @@
                 <p class="lead text-muted mt-4 mb-4">Everything is encrypted with state of art algorithm. </p>
               </div>
             </div>
-            
-            <!-- <form action="#" class="subscription-form">
-              <div class="form-group">
-                <input type="email" name="email" placeholder="Name@company.com" class="form-control">
-                <button type="submit" class="btn btn-primary">Get Started</button>
-              </div>
-            </form> -->
+                        
           </div>
           <div class="col-lg-6"><img src="{{asset('themes/appton/img/illustration-hero.svg')}}" alt="..." class="hero-image img-fluid d-none d-lg-block"></div>
         </div>
@@ -315,30 +309,9 @@
               <div class="box text-center">
                 <div class="icon d-flex align-items-end"><img src="{{asset('themes/appton/img/chat.svg')}}" alt="..." class="img-fluid"></div>
                 <h3 class="h4">Free service</h3>
-                <p class="text-small font-weight-light">MyBox is free, of course. </p>
+                <p class="text-small font-weight-light">F5 is free, of course. </p>
               </div>
             </div>
-            {{-- <div class="col-lg-4">
-              <div class="box text-center">
-                <div class="icon d-flex align-items-end"><img src="{{asset('themes/appton/img/idea.svg')}}" alt="..." class="img-fluid"></div>
-                <h3 class="h4">Consulting</h3>
-                <p class="text-small font-weight-light">Lorem Ipsum has been the industry's standard dummy text ever.</p>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="box text-center">
-                <div class="icon d-flex align-items-end"><img src="{{asset('themes/appton/img/coffee-cup.svg')}}" alt="..." class="img-fluid"></div>
-                <h3 class="h4">Email Marketing</h3>
-                <p class="text-small font-weight-light">Lorem Ipsum has been the industry's standard dummy text ever.</p>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="box text-center">
-                <div class="icon d-flex align-items-end"><img src="{{asset('themes/appton/img/pen.svg')}}" alt="..." class="img-fluid"></div>
-                <h3 class="h4">UX &amp; UI</h3>
-                <p class="text-small font-weight-light">Lorem Ipsum has been the industry's standard dummy text ever.</p>
-              </div>
-            </div> --}}
 
           </div>
         </div>
@@ -351,7 +324,7 @@
           <h2>Your data is invaluable that need to be protected</h2>
           <div class="row">
             <div class="col-lg-8 mx-auto">
-              <p class="lead text-muted mt-2">MyBox is where you can communicate in silent, safety and fun</p>
+              <p class="lead text-muted mt-2">F5 is where you can communicate in silent, safety and fun</p>
             </div>
           </div>
         </div>
@@ -368,26 +341,13 @@
       </div>
     </section>
    
-    <!-- How it works section-->
-    <!-- <section>
-      <div class="container">
-        <div class="text-center">
-          <h2>Curious how Appton works for <br>large organizations?</h2>
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <p class="lead text-muted mt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod. Eiusmod tempor incididunt ut labore.</p>
-            </div>
-          </div><a href="#" class="btn btn-primary mt-4">Get Started</a>
-        </div>
-      </div>
-    </section> -->
-
+   
     <!-- How it works Section-->
     <section class="bg-gray">
       <div class="container text-center text-lg-left">
         <div class="row align-items-center">
           <div class="col-lg-7">
-            <h2 class="divider-heading">Curious how MyBox <br>works for you?</h2>
+            <h2 class="divider-heading">Curious how F5 <br>works for you?</h2>
             <div class="row">
               <div class="col-lg-10">
                 <p class="lead divider-subtitle mt-2 text-muted">How can I be sure that I am protected? Check the FAQ!</p>
@@ -443,7 +403,7 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-6 text-center text-lg-left">
-              <p class="copyrights-text mb-3 mb-lg-0">&copy; All rights reserved. MyBox, since 2018. {{-- Frontend by <a href="https://bootstrapious.com/landing-pages" class="external footer-link">Bootstrapious </a> --}}</p>
+              <p class="copyrights-text mb-3 mb-lg-0">&copy; All rights reserved. F5, since 2018. {{-- Frontend by <a href="https://bootstrapious.com/landing-pages" class="external footer-link">Bootstrapious </a> --}}</p>
               <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)
               Thanks for the theme, paid you already :-)
               -->

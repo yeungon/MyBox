@@ -60,24 +60,6 @@
         <b style="padding-left: 10px">Manage your keys:</b>
         <div class="panel-body">
 
-          {{--      @if(strlen($users['publickey']) == true)
-                      1. <form class="form-horizontal" style="display: inline !important" method="GET" action="{{ route('key.create') }}">
-                      <button type="submit" class="btn btn-success btn-xs" style="padding-right: 8px;" disabled="disabled" >Create </button>
-                      </form>
-                      Both private and public keys have already been created.
-                      
-                @else
-                      1. <form class="form-horizontal" style="display: inline !important" method="GET" action="{{ route('key.create') }}">
-                      
-                      <button type="submit" class="btn btn-success btn-xs" style="padding-right: 8px;">Create </button>
-                      </form>
-                      If this is the first time you log-in, you cannot do anything unless you create your own keys. 
-                      
-                @endif
-                
-                <br>
-                <br> --}}
-                
                 {{-- Edit your account  --}}
                 1. <form class="form-horizontal" style="display: inline !important" method="GET" action="{{ route('key.edit') }}">
                           <button type="submit" class="btn btn-default btn-xs" style="padding-right: 15px; padding-left:  13px;">
@@ -88,17 +70,7 @@
                 {{-- end of the deleting a new masterkey section --}}
                 <br>
                 <br>
-                {{-- Delete your account  --}}
-               {{--  2. <form class="form-horizontal" style="display: inline !important" method="get" action="{{ route('key.delete') }}">
-                    {{csrf_field()}}
-
-                    <button type="submit" class="btn btn-default btn-xs" style="padding-right: 8px;">
-                        Delete
-                    </button>
-                </form>
-
-                Delete your account. You need to provide your private key to delete your account. --}}
-                {{-- end of the deleting a new masterkey section --}}
+               
         </div>
 
 
@@ -108,30 +80,7 @@
             <span class="glyphicon glyphicon-envelope"> <b> Status </b><span class="badge"> {{count($total_message)}}
             </span></span>
 
-           {{-- create new message --}}
-            {{-- <form class="form-horizontal" style="display: inline; padding-left: 20px" method="GET" action="{{ route('message.create') }}">
-                {{ csrf_field() }}
-
-                <button type="submit" class="btn btn-primary btn-xs">
-                    Write
-                </button>
-            </form>
- --}}
-            {{-- End of create the message button --}}
-
-
-
-             {{-- Read the message --}}
-            {{-- <form class="form-horizontal" style="display: inline; padding-left: 20px" method="GET" action="{{ route('key.verify') }}">
-                
-                <button type="submit" class="btn btn-success btn-xs">
-                    Read  
-                </button>
-            </form> --}}
-
-
-
-            {{-- Write button--}}
+           {{-- Write button--}}
             <span style="padding-left: 2%;"><button type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-target="#write">Write</button></span>
 
             <span style="padding-left: 5%px;"><button type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-target="#demo">Read</button></span>
@@ -341,28 +290,3 @@
 
 @endsection
 
-
-{{-- <table class="table">
-                      <th>No</th>
-                      <th>Encrypted message</th>
-                      <th>Delete  
-                      </th>
-                      @foreach ($message as $messages)
-                          <tr>
-                              <td>{{$messages->id}}</td>
-                              <td><textarea rows="8" cols="100">{{$messages->encrypted}}</textarea></td>
-                              <td><a href="{{route('message.delete', ['id' => $messages->id])}}" class ='btn btn-danger btn-xs'
-                              onclick="event.preventDefault();
-                              window.confirm('Do you really want to delete it?') ? 
-                              document.getElementById('message-{{$messages->id}}').submit() : 0; 
-                              ">Delete</a>
-                              
-                              <form action="{{route('message.delete', ['id'=> $messages->id])}}" method="post" id="message-{{$messages->id}}">
-                                {{csrf_field()}}
-                                {{method_field('delete')}}
-                              </form>
-                              </td>
-                          </tr>
-                      @endforeach      
-            </table>                   
-            <center>{{ $message->links() }}</center> --}}
